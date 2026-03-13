@@ -9,11 +9,23 @@
 [data-theme="light"]{--bg:#F0F4F8;--bg2:#fff;--surface:#fff;--surface2:#F7F9FC;--surface3:#EEF2F7;--border:#E2E8F0;--border2:#CBD5E1;--text:#1A202C;--text2:#4A5568;--text3:#94A3B8;--topbar:#fff;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.04);--blue:#1A56DB;--blue-l:#EBF2FF;--blue-g:rgba(26,86,219,.1);--green:#0D9F6E;--green-l:#ECFDF5;--yellow:#D97706;--yellow-l:#FFFBEB;--red:#DC2626;--red-l:#FEF2F2;--purple:#7C3AED;--purple-l:#F5F3FF;--teal:#0891B2;--teal-l:#ECFEFF;--ai-bg:#0c1222;--ai-border:#1E3A6E;--ai-bot-bg:#111b33;--ai-user-bg:#1a3a6e;--ai-text:#c8d8f8;--ai-glow:rgba(99,160,255,.22);--overlay:rgba(15,22,40,.55)}
 [data-theme="dark"]{--bg:#0F1117;--bg2:#161820;--surface:#1E2028;--surface2:#252830;--surface3:#2C2F3A;--border:#2E3140;--border2:#383C4E;--text:#E8EAF0;--text2:#9CA3B8;--text3:#555A70;--topbar:#161820;--shadow:0 1px 3px rgba(0,0,0,.4);--blue:#4B8EF5;--blue-l:#1E3A6E;--blue-g:rgba(75,142,245,.15);--green:#22C55E;--green-l:#14532D;--yellow:#F59E0B;--yellow-l:#451A03;--red:#EF4444;--red-l:#450A0A;--purple:#A855F7;--purple-l:#3B0764;--teal:#14B8A6;--teal-l:#042F2E;--ai-bg:#070b16;--ai-border:#182d58;--ai-bot-bg:#0b1428;--ai-user-bg:#162d5c;--ai-text:#b8ccee;--ai-glow:rgba(99,160,255,.28);--overlay:rgba(0,0,0,.72)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);font-size:14px;transition:background .25s,color .25s;min-height:100vh}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);font-size:14px;transition:background .25s,color .25s;min-height:100vh;display:flex}
 :root{--mono:'JetBrains Mono',monospace;--sora:'Sora',sans-serif}
 
+/* sidebar */
+.sidebar{width:240px;background:var(--topbar);border-right:1px solid var(--border);height:100vh;position:fixed;top:0;left:0;z-index:201;padding:20px 0;overflow-y:auto;transition:background .25s,border-color .25s}
+.sidebar-brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.sidebar-brand h1{font-family:var(--sora);font-weight:800;font-size:16px;color:var(--blue);letter-spacing:-0.3px}
+.nav-menu{padding:0 12px}
+.nav-item{margin-bottom:4px}
+.nav-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:8px;color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;transition:all 0.15s}
+.nav-link:hover{background:var(--surface2);color:var(--blue)}
+.nav-link.active{background:var(--blue-l);color:var(--blue)}
+.nav-icon{width:20px;height:20px;flex-shrink:0}
+.nav-section{font-size:11px;font-weight:600;color:var(--text3);padding:0 16px 8px;margin-top:24px;margin-bottom:8px;letter-spacing:0.5px}
+
 /* topbar */
-.topbar{background:var(--topbar);border-bottom:1px solid var(--border);padding:0 28px;height:54px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow);transition:background .25s}
+.topbar{background:var(--topbar);border-bottom:1px solid var(--border);padding:0 28px;height:54px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow);transition:background .25s;margin-left:240px}
 .brand{font-family:var(--sora);font-weight:800;font-size:15px;color:var(--blue);display:flex;align-items:center;gap:7px}
 .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
 [data-theme="dark"] .brand-dot{box-shadow:0 0 8px var(--blue)}
@@ -32,7 +44,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text
 .btn-b:hover{opacity:.88}
 
 /* page */
-.page{padding:22px 28px;max-width:1400px;margin:0 auto}
+.page{padding:22px 28px;max-width:1400px;margin:0 0 0 240px;flex:1}
 .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .ph h1{font-family:var(--sora);font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:5px}
 .ph p{font-size:13px;color:var(--text2)}
@@ -206,6 +218,72 @@ tr:hover td{background:var(--surface2);transition:background .1s}
 </style>
 </head>
 <body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>ERP Demo</h1>
+    </div>
+    <nav class="nav-menu">
+      <a href="index.html" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        首页
+      </a>
+      <div class="nav-section">物料管理</div>
+      <a href="01_material_detail.html" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+          <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+        物料详情
+      </a>
+      <a href="06_material_apply.html" class="nav-link active">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        物料申请
+      </a>
+      <div class="nav-section">生产管理</div>
+      <a href="02_work_order_trace.html" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+        工单追溯
+      </a>
+      <a href="05_material_progress_board.html" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20V10"/>
+          <path d="M18 20V4"/>
+          <path d="M6 20v-4"/>
+        </svg>
+        物料进展
+      </a>
+      <div class="nav-section">计划管理</div>
+      <a href="03_mrp_plan.html" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        MRP 计划
+      </a>
+      <div class="nav-section">工时管理</div>
+      <a href="04_worker_timesheet.html" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+          <path d="M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+        工时归集
+      </a>
+    </nav>
+  </aside>
 
 <div class="topbar">
   <div class="brand"><div class="brand-dot"></div>轻量ERP</div>
