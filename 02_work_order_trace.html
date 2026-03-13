@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生产工单 · 领料追溯</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F0F4F8;
+    --surface: #FFFFFF;
+    --surface2: #F7F9FC;
+    --border: #E2E8F0;
+    --blue: #1A56DB;
+    --blue-light: #EBF2FF;
+    --blue-mid: #3B82F6;
+    --green: #0D9F6E;
+    --green-light: #ECFDF5;
+    --orange: #F05252;
+    --orange-light: #FEF2F2;
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+    --yellow: #D97706;
+    --yellow-light: #FFFBEB;
+    --text-primary: #1A202C;
+    --text-secondary: #4A5568;
+    --text-muted: #A0AEC0;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans SC', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text-primary); min-height: 100vh; font-size: 14px; }
+
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+  .topbar-brand { font-weight: 700; font-size: 16px; color: var(--blue); }
+  .topbar-sep { color: var(--border); }
+  .breadcrumb { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+  .breadcrumb span { color: var(--text-muted); }
+  .topbar-actions { margin-left: auto; display: flex; gap: 10px; }
+  .btn { padding: 7px 16px; border-radius: 8px; font-size: 13px; font-family: var(--sans); cursor: pointer; border: none; font-weight: 500; transition: all 0.15s; }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-primary:hover { background: #1646B0; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
+  .btn-ghost:hover { background: var(--surface2); }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-green:hover { background: #0a8a5e; }
+
+  .page { max-width: 1280px; margin: 0 auto; padding: 28px 32px; }
+
+  /* WO HEADER */
+  .wo-header { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 24px; }
+  .wo-icon { width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, var(--blue) 0%, #5B9BF8 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .wo-meta { flex: 1; }
+  .wo-code { font-family: var(--mono); font-size: 13px; color: var(--blue); background: var(--blue-light); padding: 3px 10px; border-radius: 5px; display: inline-block; margin-bottom: 6px; }
+  .wo-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .wo-attrs { display: flex; gap: 20px; flex-wrap: wrap; }
+  .wo-attr { font-size: 12px; color: var(--text-secondary); }
+  .wo-attr strong { color: var(--text-primary); }
+  .wo-status-block { text-align: right; flex-shrink: 0; }
+  .status-big { font-size: 13px; font-weight: 600; padding: 6px 18px; border-radius: 20px; }
+  .status-inprod { background: var(--blue-light); color: var(--blue); }
+  .wo-progress { margin-top: 10px; }
+  .progress-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; width: 160px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue) 0%, #5B9BF8 100%); border-radius: 4px; }
+
+  /* COST SUMMARY */
+  .cost-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .cost-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+  .cost-label { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.4px; margin-bottom: 8px; }
+  .cost-val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; line-height: 1; }
+  .cost-val.blue { color: var(--blue); }
+  .cost-val.green { color: var(--green); }
+  .cost-val.purple { color: var(--purple); }
+  .cost-val.orange { color: var(--orange); }
+  .cost-compare { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+  .cost-compare.over { color: var(--orange); font-weight: 600; }
+  .cost-compare.under { color: var(--green); font-weight: 600; }
+
+  /* TRACE CHAIN */
+  .trace-section { margin-bottom: 24px; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content:''; display: inline-block; width: 4px; height: 18px; background: var(--blue); border-radius: 2px; }
+  .chain-wrap { display: flex; gap: 0; margin-bottom: 20px; }
+  .chain-node { flex: 1; position: relative; }
+  .chain-node::after { content: '›'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: var(--blue); font-size: 20px; font-weight: 700; z-index: 2; }
+  .chain-node:last-child::after { display: none; }
+  .chain-box { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; margin: 0 12px; text-align: center; transition: all 0.2s; cursor: pointer; }
+  .chain-box:hover { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-light); }
+  .chain-box.active { border-color: var(--blue); background: var(--blue-light); }
+  .chain-icon { font-size: 22px; margin-bottom: 6px; }
+  .chain-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .chain-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* MATERIAL TABLE */
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 20px; }
+  .panel-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .panel-title { font-size: 14px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+  .dot.green { background: var(--green); }
+  .dot.purple { background: var(--purple); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--surface2); }
+  th { padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-align: left; border-bottom: 1px solid var(--border); letter-spacing: 0.3px; }
+  td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .td-mono { font-family: var(--mono); font-size: 12px; color: var(--blue); }
+  .td-num { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+  .badge-red { background: var(--orange-light); color: var(--orange); }
+  .badge-blue { background: var(--blue-light); color: var(--blue); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+  /* COST ROW HIGHLIGHT */
+  .over-bom { background: #FFF9F9 !important; }
+  .over-bom td { color: var(--text-primary); }
+  .diff-over { color: var(--orange); font-weight: 700; font-family: var(--mono); font-size: 12px; }
+  .diff-ok { color: var(--green); font-weight: 600; font-family: var(--mono); font-size: 12px; }
+  .diff-eq { color: var(--text-muted); font-family: var(--mono); font-size: 12px; }
+
+  /* TRACE DETAIL */
+  .trace-detail { background: var(--blue-light); border: 1.5px solid #C7D9F8; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
+  .trace-detail-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 12px; }
+  .trace-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); padding: 4px 0; }
+  .trace-key { font-weight: 600; color: var(--text-primary); min-width: 90px; flex-shrink: 0; }
+  .trace-arrow { color: var(--blue); margin: 0 4px; font-weight: 700; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .page > * { animation: fadeUp 0.3s ease both; }
+  .page > *:nth-child(2) { animation-delay: 0.05s; }
+  .page > *:nth-child(3) { animation-delay: 0.1s; }
+  .page > *:nth-child(4) { animation-delay: 0.15s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">⚡ 轻量ERP</div>
+  <div class="topbar-sep">/</div>
+  <div class="breadcrumb">生产管理 <span>›</span> 生产工单 <span>›</span> WO-2025-0488</div>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost">打印工单</button>
+    <button class="btn btn-green">申请领料</button>
+    <button class="btn btn-primary">完工报告</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- WO HEADER -->
+  <div class="wo-header">
+    <div class="wo-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect x="4" y="6" width="20" height="16" rx="2" fill="white" opacity="0.3"/>
+        <path d="M8 12h12M8 16h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="22" cy="8" r="4" fill="#10B981"/>
+        <path d="M20.5 8l1 1 2-2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="wo-meta">
+      <div class="wo-code">WO-2025-0488</div>
+      <div class="wo-name">智能配电柜 PDU-A3000 × 12 台</div>
+      <div class="wo-attrs">
+        <div class="wo-attr">计划开工 <strong>2025-06-05</strong></div>
+        <div class="wo-attr">计划完工 <strong>2025-06-20</strong></div>
+        <div class="wo-attr">负责人 <strong>张伟</strong></div>
+        <div class="wo-attr">所属车间 <strong>装配一车间</strong></div>
+        <div class="wo-attr">优先级 <strong style="color:var(--orange)">高</strong></div>
+      </div>
+    </div>
+    <div class="wo-status-block">
+      <div class="status-big status-inprod">生产中</div>
+      <div class="wo-progress">
+        <div class="progress-label"><span>完工进度</span><span>7 / 12 台</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:58%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COST SUMMARY -->
+  <div class="cost-summary">
+    <div class="cost-card">
+      <div class="cost-label">BOM 标准材料成本</div>
+      <div class="cost-val blue">¥ 48,720</div>
+      <div class="cost-compare">按 12 台 × BOM 标准价</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-label">实际领料成本</div>
+      <div class="cost-val orange">¥ 51,384</div>
+      <div class="cost-compare over">超 BOM ▲ ¥2,664（+5.5%）</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-label">人工成本（截至今日）</div>
+      <div class="cost-val purple">¥ 8,240</div>
+      <div class="cost-compare under">预算内 ▼ ¥360</div>
+    </div>
+    <div class="cost-card">
+      <div class="cost-label">工单综合成本</div>
+      <div class="cost-val green">¥ 59,624</div>
+      <div class="cost-compare">材料 + 人工合计</div>
+    </div>
+  </div>
+
+  <!-- TRACE CHAIN -->
+  <div class="trace-section">
+    <div class="section-title">成本追溯链路</div>
+    <div class="chain-wrap">
+      <div class="chain-node">
+        <div class="chain-box active">
+          <div class="chain-icon">📋</div>
+          <div class="chain-name">生产工单</div>
+          <div class="chain-sub">WO-2025-0488</div>
+        </div>
+      </div>
+      <div class="chain-node">
+        <div class="chain-box">
+          <div class="chain-icon">📦</div>
+          <div class="chain-name">领料记录</div>
+          <div class="chain-sub">8 条记录</div>
+        </div>
+      </div>
+      <div class="chain-node">
+        <div class="chain-box">
+          <div class="chain-icon">🏷️</div>
+          <div class="chain-name">库存批次</div>
+          <div class="chain-sub">BATCH-240610</div>
+        </div>
+      </div>
+      <div class="chain-node">
+        <div class="chain-box">
+          <div class="chain-icon">🛒</div>
+          <div class="chain-name">采购订单</div>
+          <div class="chain-sub">PO-2025-0312</div>
+        </div>
+      </div>
+      <div class="chain-node">
+        <div class="chain-box">
+          <div class="chain-icon">💰</div>
+          <div class="chain-name">结算价格</div>
+          <div class="chain-sub">¥248 / PCS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRACE DETAIL BOX -->
+    <div class="trace-detail">
+      <div class="trace-detail-title">🔍 追溯示例：开关电源模块 PSU-240W-48V × 24PCS</div>
+      <div class="trace-row"><span class="trace-key">领料记录</span><span class="trace-arrow">→</span> MR-2025-1102 &nbsp;|&nbsp; 2025-06-08 &nbsp;|&nbsp; 领取 24 PCS &nbsp;|&nbsp; 仓管员：李明</div>
+      <div class="trace-row"><span class="trace-key">库存批次</span><span class="trace-arrow">→</span> BATCH-240610 &nbsp;|&nbsp; 入库日期 2025-06-10 &nbsp;|&nbsp; 库位 A仓/03-B-07</div>
+      <div class="trace-row"><span class="trace-key">采购订单</span><span class="trace-arrow">→</span> PO-2025-0312 &nbsp;|&nbsp; 上海明纬电子有限公司 &nbsp;|&nbsp; 批次数量 30 PCS</div>
+      <div class="trace-row"><span class="trace-key">结算价格</span><span class="trace-arrow">→</span> ¥248.00 / PCS &nbsp;|&nbsp; 本次领料材料成本 = 24 × ¥248 = <strong style="color:var(--blue)">¥5,952</strong></div>
+    </div>
+  </div>
+
+  <!-- MATERIAL TABLE -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title"><div class="dot green"></div>工单领料明细 &amp; 实际材料成本</div>
+      <span style="font-size:12px;color:var(--text-muted)">已领料 8 种 &nbsp;|&nbsp; 实际成本 ¥51,384</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>物料编码</th>
+          <th>物料名称</th>
+          <th>BOM 标准用量</th>
+          <th>实际领料量</th>
+          <th>结算单价</th>
+          <th>实际成本</th>
+          <th>BOM 成本</th>
+          <th>差异</th>
+          <th>批次</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="over-bom">
+          <td class="td-mono">MAT-ELC-00147</td>
+          <td>开关电源模块 PSU-240W-48V</td>
+          <td class="td-num">24</td>
+          <td class="td-num">24</td>
+          <td class="td-num">¥248.00</td>
+          <td class="td-num">¥5,952</td>
+          <td class="td-num">¥5,760</td>
+          <td><span class="diff-over">▲ ¥192</span></td>
+          <td class="td-mono">BATCH-240610</td>
+          <td><span class="badge badge-green">已领完</span></td>
+        </tr>
+        <tr>
+          <td class="td-mono">MAT-CAB-00083</td>
+          <td>铜排 TMY-60×6</td>
+          <td class="td-num">36 m</td>
+          <td class="td-num">36 m</td>
+          <td class="td-num">¥42.50/m</td>
+          <td class="td-num">¥1,530</td>
+          <td class="td-num">¥1,530</td>
+          <td><span class="diff-eq">—</span></td>
+          <td class="td-mono">BATCH-240528</td>
+          <td><span class="badge badge-green">已领完</span></td>
+        </tr>
+        <tr class="over-bom">
+          <td class="td-mono">MAT-ELC-00231</td>
+          <td>断路器 ABB S203-C32</td>
+          <td class="td-num">48</td>
+          <td class="td-num">52</td>
+          <td class="td-num">¥185.00</td>
+          <td class="td-num">¥9,620</td>
+          <td class="td-num">¥8,880</td>
+          <td><span class="diff-over">▲ ¥740</span></td>
+          <td class="td-mono">BATCH-240520</td>
+          <td><span class="badge badge-yellow">多领4只</span></td>
+        </tr>
+        <tr>
+          <td class="td-mono">MAT-SHT-00019</td>
+          <td>冷轧钢板 1.5mm</td>
+          <td class="td-num">144 kg</td>
+          <td class="td-num">140 kg</td>
+          <td class="td-num">¥8.20/kg</td>
+          <td class="td-num">¥1,148</td>
+          <td class="td-num">¥1,181</td>
+          <td><span class="diff-ok">▼ ¥33</span></td>
+          <td class="td-mono">BATCH-240601</td>
+          <td><span class="badge badge-green">已领完</span></td>
+        </tr>
+        <tr>
+          <td class="td-mono">MAT-ELC-00308</td>
+          <td>接触器 CJX2-0910</td>
+          <td class="td-num">36</td>
+          <td class="td-num">36</td>
+          <td class="td-num">¥68.00</td>
+          <td class="td-num">¥2,448</td>
+          <td class="td-num">¥2,448</td>
+          <td><span class="diff-eq">—</span></td>
+          <td class="td-mono">BATCH-240515</td>
+          <td><span class="badge badge-green">已领完</span></td>
+        </tr>
+        <tr>
+          <td class="td-mono">MAT-WIR-00045</td>
+          <td>BV线 2.5mm² 红色</td>
+          <td class="td-num">600 m</td>
+          <td class="td-num">580 m</td>
+          <td class="td-num">¥3.20/m</td>
+          <td class="td-num">¥1,856</td>
+          <td class="td-num">¥1,920</td>
+          <td><span class="diff-ok">▼ ¥64</span></td>
+          <td class="td-mono">BATCH-240605</td>
+          <td><span class="badge badge-green">已领完</span></td>
+        </tr>
+        <tr>
+          <td class="td-mono">MAT-HDW-00112</td>
+          <td>M6 不锈钢螺母 / 螺栓组合</td>
+          <td class="td-num">400 套</td>
+          <td class="td-num">400 套</td>
+          <td class="td-num">¥1.80/套</td>
+          <td class="td-num">¥720</td>
+          <td class="td-num">¥720</td>
+          <td><span class="diff-eq">—</span></td>
+          <td class="td-mono">BATCH-240510</td>
+          <td><span class="badge badge-green">已领完</span></td>
+        </tr>
+        <tr>
+          <td class="td-mono">MAT-ELC-00419</td>
+          <td>电流互感器 LMK2-0.66 100/5A</td>
+          <td class="td-num">36</td>
+          <td class="td-num">—</td>
+          <td class="td-num">¥42.00</td>
+          <td class="td-num">—</td>
+          <td class="td-num">¥1,512</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="badge badge-blue">待领料</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

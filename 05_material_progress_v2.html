@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>物料进展看板 · BOM 追踪</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== THEME VARIABLES ===== */
+[data-theme="light"] {
+  --bg:        #F0F4F8;
+  --bg2:       #FFFFFF;
+  --surface:   #FFFFFF;
+  --surface2:  #F7F9FC;
+  --surface3:  #EEF2F7;
+  --border:    #E2E8F0;
+  --border2:   #CBD5E1;
+  --text:      #1A202C;
+  --text2:     #4A5568;
+  --text3:     #94A3B8;
+  --topbar-bg: #FFFFFF;
+  --shadow:    0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+
+  --blue:        #1A56DB;
+  --blue-light:  #EBF2FF;
+  --blue-mid:    #3B82F6;
+  --blue-glow:   rgba(26,86,219,0.12);
+  --green:       #0D9F6E;
+  --green-light: #ECFDF5;
+  --yellow:      #D97706;
+  --yellow-light:#FFFBEB;
+  --orange:      #EA580C;
+  --orange-light:#FFF4EE;
+  --red:         #DC2626;
+  --red-light:   #FEF2F2;
+  --teal:        #0891B2;
+  --teal-light:  #ECFEFF;
+  --purple:      #7C3AED;
+  --purple-light:#F5F3FF;
+}
+[data-theme="dark"] {
+  --bg:        #0F1117;
+  --bg2:       #161820;
+  --surface:   #1E2028;
+  --surface2:  #252830;
+  --surface3:  #2C2F3A;
+  --border:    #2E3140;
+  --border2:   #383C4E;
+  --text:      #E8EAF0;
+  --text2:     #9CA3B8;
+  --text3:     #555A70;
+  --topbar-bg: #161820;
+  --shadow:    0 1px 3px rgba(0,0,0,0.4);
+
+  --blue:        #4B8EF5;
+  --blue-light:  #1E3A6E;
+  --blue-mid:    #3B82F6;
+  --blue-glow:   rgba(75,142,245,0.15);
+  --green:       #22C55E;
+  --green-light: #14532D;
+  --yellow:      #F59E0B;
+  --yellow-light:#451A03;
+  --orange:      #F97316;
+  --orange-light:#431407;
+  --red:         #EF4444;
+  --red-light:   #450A0A;
+  --teal:        #14B8A6;
+  --teal-light:  #042F2E;
+  --purple:      #A855F7;
+  --purple-light:#3B0764;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; transition: background 0.25s, color 0.25s; }
+:root { --mono: 'JetBrains Mono', monospace; --sans: 'Noto Sans SC', sans-serif; }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: var(--shadow);
+  transition: background 0.25s, border-color 0.25s;
+}
+.brand { font-weight: 900; font-size: 15px; color: var(--blue); letter-spacing: -0.5px; display: flex; align-items: center; gap: 7px; }
+.brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+[data-theme="dark"] .brand-dot { box-shadow: 0 0 8px var(--blue); }
+.sep { color: var(--border2); }
+.breadcrumb { font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 5px; }
+.breadcrumb span { color: var(--text3); }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+/* Theme Toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.theme-toggle:hover { border-color: var(--blue); }
+.tt-option {
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.2s;
+  color: var(--text3);
+  display: flex; align-items: center; gap: 4px;
+}
+.tt-option.active { background: var(--blue); color: #fff; }
+
+.btn { padding: 6px 14px; border-radius: 7px; font-size: 12px; font-family: var(--sans); cursor: pointer; border: none; font-weight: 600; transition: all 0.15s; display: inline-flex; align-items: center; gap: 5px; }
+.btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--text2); }
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-blue:hover { opacity: 0.88; }
+.live-badge { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--green); font-weight: 600; background: var(--green-light); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(13,159,110,0.3); }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+/* ===== PAGE ===== */
+.page { padding: 20px 28px; max-width: 1540px; margin: 0 auto; }
+
+/* ===== SUMMARY STRIP ===== */
+.summary-strip { display: grid; grid-template-columns: 232px 1fr; gap: 16px; margin-bottom: 18px; }
+.product-selector { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.ps-header { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.8px; }
+.ps-item { display: flex; align-items: center; gap: 9px; padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; position: relative; border-left: 3px solid transparent; }
+.ps-item:hover { background: var(--surface2); }
+.ps-item.active { background: var(--blue-light); border-left-color: var(--blue); }
+.ps-item.active .ps-name { color: var(--blue); }
+.ps-icon { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.ps-info { flex: 1; min-width: 0; }
+.ps-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ps-sub { font-size: 10px; color: var(--text3); margin-top: 1px; }
+.ps-alert { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 8px; flex-shrink: 0; }
+.alert-red { background: var(--red-light); color: var(--red); }
+.alert-yellow { background: var(--yellow-light); color: var(--yellow); }
+.alert-green { background: var(--green-light); color: var(--green); }
+
+/* Stat cards */
+.stat-cards { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+.sc-blue::before   { background: var(--blue); }
+.sc-green::before  { background: var(--green); }
+.sc-yellow::before { background: var(--yellow); }
+.sc-red::before    { background: var(--red); }
+.sc-teal::before   { background: var(--teal); }
+[data-theme="dark"] .sc-blue::before   { box-shadow: 0 0 10px var(--blue); }
+[data-theme="dark"] .sc-green::before  { box-shadow: 0 0 10px var(--green); }
+[data-theme="dark"] .sc-yellow::before { box-shadow: 0 0 10px var(--yellow); }
+[data-theme="dark"] .sc-red::before    { box-shadow: 0 0 10px var(--red); }
+.sc-label { font-size: 10px; color: var(--text3); font-weight: 600; letter-spacing: 0.5px; margin-bottom: 8px; }
+.sc-val { font-size: 28px; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+.sc-val.blue   { color: var(--blue); }
+.sc-val.green  { color: var(--green); }
+.sc-val.yellow { color: var(--yellow); }
+.sc-val.red    { color: var(--red); }
+.sc-val.teal   { color: var(--teal); }
+.sc-sub { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+/* ===== PRODUCT HEADER ===== */
+.product-header { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); }
+.ph-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--blue-light); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; border: 1px solid var(--border); }
+.ph-name { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+.ph-meta { display: flex; gap: 14px; flex-wrap: wrap; }
+.ph-meta-item { font-size: 12px; color: var(--text2); }
+.ph-meta-item strong { color: var(--text); }
+
+/* ===== PIPELINE BAR ===== */
+.pipeline-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 20px; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; overflow-x: auto; box-shadow: var(--shadow); }
+.pipe-step { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+.pipe-icon-wrap { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 2px solid; transition: all 0.2s; }
+.pipe-done  .pipe-icon-wrap { background: var(--green-light);  border-color: var(--green); }
+.pipe-active .pipe-icon-wrap { background: var(--blue-light);  border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-glow); }
+.pipe-pending .pipe-icon-wrap { background: var(--surface3); border-color: var(--border2); }
+.pipe-label { font-size: 10px; font-weight: 600; white-space: nowrap; }
+.pipe-done  .pipe-label { color: var(--green); }
+.pipe-active .pipe-label { color: var(--blue); }
+.pipe-pending .pipe-label { color: var(--text3); }
+.pipe-conn { flex: 1; height: 2px; min-width: 24px; border-radius: 1px; }
+.conn-done { background: var(--green); }
+.conn-half { background: linear-gradient(90deg, var(--green), var(--border2)); }
+.conn-none { background: var(--border2); }
+.pipe-pct { margin-left: auto; text-align: right; flex-shrink: 0; padding-left: 16px; border-left: 1px solid var(--border); display: flex; gap: 20px; }
+.pct-item { text-align: center; }
+.pct-val { font-family: var(--mono); font-size: 20px; font-weight: 700; }
+.pct-label { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+/* ===== TABLE WRAP ===== */
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.table-toolbar { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: var(--surface2); }
+.filter-input { padding: 6px 11px; border-radius: 7px; border: 1px solid var(--border2); font-size: 12px; font-family: var(--sans); background: var(--surface); outline: none; color: var(--text); width: 170px; transition: border-color 0.15s; }
+.filter-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-light); }
+.filter-select { padding: 6px 10px; border-radius: 7px; border: 1px solid var(--border2); font-size: 12px; font-family: var(--sans); background: var(--surface); color: var(--text); outline: none; cursor: pointer; }
+
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: var(--surface2); }
+th { padding: 9px 14px; font-size: 11px; font-weight: 700; color: var(--text3); text-align: left; border-bottom: 1px solid var(--border); letter-spacing: 0.5px; white-space: nowrap; }
+td { padding: 0; border-bottom: 1px solid var(--border); vertical-align: middle; transition: background 0.1s; }
+tr:last-child td { border-bottom: none; }
+.td-p { padding: 10px 14px; }
+tr:hover td { background: var(--surface2); }
+
+/* Group rows */
+.group-row td { background: var(--surface3) !important; }
+.group-label { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.5px; padding: 7px 14px; }
+.group-label::before { content:''; display:inline-block; width:3px; height:13px; background: var(--blue); border-radius:2px; flex-shrink:0; }
+
+/* Danger / warn rows */
+.row-danger td { background: color-mix(in srgb, var(--red) 4%, var(--surface)) !important; }
+.row-danger:hover td { background: color-mix(in srgb, var(--red) 8%, var(--surface)) !important; }
+.row-warn td { background: color-mix(in srgb, var(--orange) 3%, var(--surface)) !important; }
+.row-warn:hover td { background: color-mix(in srgb, var(--orange) 6%, var(--surface)) !important; }
+
+/* Mat name */
+.mat-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.mat-code { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-top: 2px; }
+.mat-spec { font-size: 11px; color: var(--text2); margin-top: 1px; }
+
+/* Type badge */
+.type-badge { padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap; }
+.type-stock    { background: var(--teal-light);   color: var(--teal);   border: 1px solid rgba(8,145,178,0.25); }
+.type-purchase { background: var(--blue-light);   color: var(--blue);   border: 1px solid rgba(26,86,219,0.2); }
+
+/* ===== STEP CAPSULE TRACK ===== */
+/* Each step is a pill: icon + short text, colored by state */
+.step-track { display: flex; align-items: center; gap: 0; }
+.step-cap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1.5px solid;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: default;
+  position: relative;
+  transition: transform 0.12s;
+  flex-shrink: 0;
+}
+.step-cap:hover { transform: translateY(-1px); z-index: 5; }
+.step-cap:hover .step-tip { display: block; }
+.step-tip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  padding: 7px 11px;
+  min-width: 160px;
+  font-size: 11px;
+  color: var(--text2);
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  line-height: 1.6;
+  font-weight: 400;
+  pointer-events: none;
+}
+.step-tip strong { color: var(--text); font-weight: 700; display: block; margin-bottom: 3px; }
+
+/* State colors */
+.cap-done {
+  background: var(--green-light);
+  border-color: var(--green);
+  color: var(--green);
+}
+.cap-active {
+  background: var(--blue-light);
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+[data-theme="dark"] .cap-active { animation: activePulse 2.5s infinite; }
+@keyframes activePulse { 0%,100%{box-shadow:0 0 0 2px var(--blue-glow);} 50%{box-shadow:0 0 0 4px var(--blue-glow);} }
+.cap-pending {
+  background: var(--surface3);
+  border-color: var(--border2);
+  color: var(--text3);
+}
+.cap-skip {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text3);
+  border-style: dashed;
+}
+
+/* Connector arrow between steps */
+.step-arrow {
+  width: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+.arrow-done { color: var(--green); }
+.arrow-half { color: var(--border2); }
+.arrow-none { color: var(--border2); }
+
+/* Cap icon */
+.cap-icon { font-size: 13px; line-height: 1; flex-shrink: 0; }
+.cap-text { font-size: 10px; font-weight: 700; letter-spacing: 0.2px; }
+
+/* ===== DATE CELL ===== */
+.date-cell { display: flex; flex-direction: column; gap: 1px; }
+.date-val { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+.date-by { font-size: 10px; color: var(--text3); line-height: 1.4; }
+.date-by b { color: var(--text2); font-weight: 600; }
+
+/* ===== WARNING BADGE ===== */
+.warn-lv { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.lv0 { background: var(--green-light);  color: var(--green);  border: 1px solid rgba(13,159,110,0.25); }
+.lv1 { background: var(--yellow-light); color: var(--yellow); border: 1px solid rgba(217,119,6,0.25); }
+.lv2 { background: var(--orange-light); color: var(--orange); border: 1px solid rgba(234,88,12,0.25); }
+.lv3 { background: var(--red-light);    color: var(--red);    border: 1px solid rgba(220,38,38,0.3); }
+[data-theme="dark"] .lv3 { animation: warnPulse 2s infinite; }
+@keyframes warnPulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0);} 50%{box-shadow:0 0 0 3px rgba(239,68,68,0.2);} }
+
+.diff-over  { color: var(--red);    font-family: var(--mono); font-size: 12px; font-weight: 700; }
+.diff-tight { color: var(--yellow); font-family: var(--mono); font-size: 12px; font-weight: 700; }
+.diff-ok    { color: var(--green);  font-family: var(--mono); font-size: 12px; font-weight: 600; }
+
+/* ===== DETAIL DRAWER ===== */
+.drawer { display: none; }
+.drawer.open { display: table-row; animation: drawerIn 0.2s ease; }
+@keyframes drawerIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+.drawer-inner { padding: 16px 20px 18px; background: var(--bg); border-bottom: 1px solid var(--border); }
+.drawer-title { font-size: 12px; font-weight: 700; color: var(--text2); margin-bottom: 12px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+.drawer-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.drawer-item { background: var(--surface); border-radius: 9px; padding: 10px 14px; border: 1px solid var(--border); }
+.di-label { font-size: 10px; color: var(--text3); margin-bottom: 4px; font-weight: 600; letter-spacing: 0.4px; }
+.di-val { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
+.di-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+/* qty */
+.qty-cell { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--text); }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.page > * { animation: fadeIn 0.3s ease both; }
+</style>
+</head>
+<body>
+
+<!-- ===== TOPBAR ===== -->
+<div class="topbar">
+  <div class="brand"><div class="brand-dot"></div>轻量ERP</div>
+  <div class="sep">/</div>
+  <div class="breadcrumb">采购管理 <span>›</span> 物料进展看板</div>
+  <div class="topbar-right">
+    <div class="live-badge"><div class="live-dot"></div>实时更新</div>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <div class="tt-option active" id="tt-light">☀️ 日间</div>
+      <div class="tt-option" id="tt-dark">🌙 暗色</div>
+    </div>
+    <button class="btn btn-ghost">导出看板</button>
+    <button class="btn btn-blue">+ 手动更新</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- SUMMARY STRIP -->
+  <div class="summary-strip">
+    <div class="product-selector">
+      <div class="ps-header">产品 / 工单</div>
+      <div class="ps-item active" onclick="selectProd(this)">
+        <div class="ps-icon" style="background:var(--blue-light)">⚡</div>
+        <div class="ps-info"><div class="ps-name">智能配电柜 PDU-A3000</div><div class="ps-sub">WO-0488 · ×12台 · 交期 06-20</div></div>
+        <div class="ps-alert alert-red">3级</div>
+      </div>
+      <div class="ps-item" onclick="selectProd(this)">
+        <div class="ps-icon" style="background:var(--green-light)">🔋</div>
+        <div class="ps-info"><div class="ps-name">储能变流器 PCS-100KW</div><div class="ps-sub">WO-0491 · ×5台 · 交期 06-25</div></div>
+        <div class="ps-alert alert-yellow">2级</div>
+      </div>
+      <div class="ps-item" onclick="selectProd(this)">
+        <div class="ps-icon" style="background:var(--teal-light)">📡</div>
+        <div class="ps-info"><div class="ps-name">工业通信网关 GW-M200</div><div class="ps-sub">WO-0494 · ×30台 · 交期 07-05</div></div>
+        <div class="ps-alert alert-green">正常</div>
+      </div>
+      <div class="ps-item" onclick="selectProd(this)">
+        <div class="ps-icon" style="background:var(--yellow-light)">☀️</div>
+        <div class="ps-info"><div class="ps-name">光伏汇流箱 CB-16路</div><div class="ps-sub">WO-0496 · ×20台 · 交期 07-10</div></div>
+        <div class="ps-alert alert-yellow">1级</div>
+      </div>
+    </div>
+
+    <div class="stat-cards">
+      <div class="stat-card sc-blue">
+        <div class="sc-label">BOM 物料总数</div>
+        <div class="sc-val blue">47</div>
+        <div class="sc-sub">PDU-A3000 展开</div>
+      </div>
+      <div class="stat-card sc-teal">
+        <div class="sc-label">库存料（已就绪）</div>
+        <div class="sc-val teal">18</div>
+        <div class="sc-sub">可直接领料</div>
+      </div>
+      <div class="stat-card sc-green">
+        <div class="sc-label">采购料（进行中）</div>
+        <div class="sc-val green">23</div>
+        <div class="sc-sub">6条已结算完成</div>
+      </div>
+      <div class="stat-card sc-yellow">
+        <div class="sc-label">⚠ 延期风险物料</div>
+        <div class="sc-val yellow">8</div>
+        <div class="sc-sub">其中3条3级红色</div>
+      </div>
+      <div class="stat-card sc-red">
+        <div class="sc-label">🚨 3级红色预警</div>
+        <div class="sc-val red">3</div>
+        <div class="sc-sub">已超出生产交期</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT HEADER -->
+  <div class="product-header">
+    <div class="ph-icon">⚡</div>
+    <div style="flex:1;">
+      <div class="ph-name">智能配电柜 PDU-A3000 <span style="font-size:13px;font-weight:400;color:var(--text2)">× 12 台</span></div>
+      <div class="ph-meta">
+        <div class="ph-meta-item">工单 <strong>WO-2025-0488</strong></div>
+        <div class="ph-meta-item">生产交期 <strong style="color:var(--yellow)">2025-06-20</strong></div>
+        <div class="ph-meta-item">负责人 <strong>张伟</strong></div>
+        <div class="ph-meta-item">生产进度 <strong style="color:var(--blue)">58%</strong></div>
+        <div class="ph-meta-item">物料齐套率 <strong style="color:var(--yellow)">79%</strong></div>
+      </div>
+    </div>
+    <div class="warn-lv lv3">🚨 3级预警 · 3条物料超期</div>
+  </div>
+
+  <!-- PIPELINE BAR -->
+  <div class="pipeline-bar">
+    <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;margin-right:12px;white-space:nowrap;">整体进度</div>
+    <div class="pipe-step pipe-done">
+      <div class="pipe-icon-wrap">📋</div>
+      <div class="pipe-label">需求拆分</div>
+    </div>
+    <div class="pipe-conn conn-done"></div>
+    <div class="pipe-step pipe-done">
+      <div class="pipe-icon-wrap">⚖️</div>
+      <div class="pipe-label">慧采比价</div>
+    </div>
+    <div class="pipe-conn conn-half"></div>
+    <div class="pipe-step pipe-active">
+      <div class="pipe-icon-wrap">📝</div>
+      <div class="pipe-label">慧采合同</div>
+    </div>
+    <div class="pipe-conn conn-none"></div>
+    <div class="pipe-step pipe-pending">
+      <div class="pipe-icon-wrap">🚚</div>
+      <div class="pipe-label">供应商到货</div>
+    </div>
+    <div class="pipe-conn conn-none"></div>
+    <div class="pipe-step pipe-pending">
+      <div class="pipe-icon-wrap">🧾</div>
+      <div class="pipe-label">结算完成</div>
+    </div>
+    <div class="pipe-conn conn-none"></div>
+    <div class="pipe-step pipe-pending">
+      <div class="pipe-icon-wrap">💳</div>
+      <div class="pipe-label">付款完成</div>
+    </div>
+    <div class="pipe-pct">
+      <div class="pct-item"><div class="pct-val" style="color:var(--blue)">47%</div><div class="pct-label">整体进度</div></div>
+      <div class="pct-item"><div class="pct-val" style="color:var(--green)">31</div><div class="pct-label">已到货</div></div>
+      <div class="pct-item"><div class="pct-val" style="color:var(--yellow)">16</div><div class="pct-label">待到货</div></div>
+    </div>
+  </div>
+
+  <!-- MAIN TABLE -->
+  <div class="table-wrap">
+    <div class="table-toolbar">
+      <input class="filter-input" placeholder="🔍 搜索物料名称 / 编码">
+      <select class="filter-select"><option>全部类型</option><option>库存料</option><option>采购料</option></select>
+      <select class="filter-select"><option>全部步骤</option><option>需求拆分</option><option>慧采比价</option><option>慧采合同</option><option>供应商到货</option><option>结算完成</option><option>付款完成</option></select>
+      <select class="filter-select"><option>全部预警</option><option>🚨 3级红色</option><option>🟠 2级橙色</option><option>🟡 1级黄色</option><option>✅ 无风险</option></select>
+      <div style="margin-left:auto;font-size:11px;color:var(--text3);display:flex;align-items:center;gap:12px;">
+        <span style="display:inline-flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);"></span>已完成</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--blue);"></span>进行中</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--border2);"></span>未开始</span>
+        <span style="color:var(--text3);">· 悬停步骤可见详情</span>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:32px;">#</th>
+          <th style="min-width:200px;">物料名称</th>
+          <th style="width:70px;">类型</th>
+          <th style="width:80px;">需求量</th>
+          <th style="min-width:560px;">采购进度（悬停步骤查看详情）</th>
+          <th style="min-width:120px;">预计到货</th>
+          <th style="min-width:95px;">生产交期</th>
+          <th style="width:88px;">差值</th>
+          <th style="width:108px;">预警等级</th>
+          <th style="width:56px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ===== 3级红色 ===== -->
+        <tr class="group-row"><td colspan="10"><div class="group-label">🚨 3级红色预警 · 已超出生产需求交期（3条）</div></td></tr>
+
+        <!-- R1 -->
+        <tr class="row-danger">
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">1</div></td>
+          <td><div class="td-p"><div class="mat-name">IGBT 模块 FF300R12KE4</div><div class="mat-code">MAT-ELC-00519</div><div class="mat-spec">英飞凌 · 1200V/300A</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-purchase">采购料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">30 PCS</span></div></td>
+          <td><div class="td-p">
+            <div class="step-track">
+              <div class="step-cap cap-done">
+                <span class="cap-icon">📋</span><span class="cap-text">需求拆分</span>
+                <div class="step-tip"><strong>✅ 需求拆分 · 完成</strong>完成时间：2025-05-25<br>MRP 自动生成需求</div>
+              </div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done">
+                <span class="cap-icon">⚖️</span><span class="cap-text">慧采比价</span>
+                <div class="step-tip"><strong>✅ 慧采比价 · 完成</strong>比价时间：2025-05-28<br>3家供应商报价，选定英飞凌</div>
+              </div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done">
+                <span class="cap-icon">📝</span><span class="cap-text">慧采合同</span>
+                <div class="step-tip"><strong>✅ 慧采合同 · 已签</strong>合同号：CT-2025-0241<br>签订时间：2025-05-30<br>单价：¥1,280/PCS</div>
+              </div>
+              <div class="step-arrow arrow-half">›</div>
+              <div class="step-cap cap-active">
+                <span class="cap-icon">🚚</span><span class="cap-text">供应商到货</span>
+                <div class="step-tip"><strong>⏳ 供应商到货 · 进行中</strong>供应商：英飞凌（上海）<br>承诺到货：2025-07-05<br>状态：供货紧张，备货不足<br>反馈人：<b>李采购</b> · 06-10</div>
+              </div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending">
+                <span class="cap-icon">🧾</span><span class="cap-text">结算完成</span>
+                <div class="step-tip"><strong>⬜ 结算完成 · 待进行</strong>等待到货后进行</div>
+              </div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending">
+                <span class="cap-icon">💳</span><span class="cap-text">付款完成</span>
+                <div class="step-tip"><strong>⬜ 付款完成 · 待进行</strong>等待结算后执行</div>
+              </div>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell">
+            <div class="date-val" style="color:var(--red)">07-05</div>
+            <div class="date-by">供应商反馈</div>
+            <div class="date-by"><b>李采购</b> · 06-10</div>
+          </div></div></td>
+          <td><div class="td-p"><div class="date-cell">
+            <div class="date-val" style="color:var(--yellow)">06-20</div>
+            <div class="date-by">生产需求</div>
+          </div></div></td>
+          <td><div class="td-p"><span class="diff-over">延 +15天</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv3">🚨 3级</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;" onclick="toggleDrawer('d1')">详情</button></div></td>
+        </tr>
+        <tr class="drawer" id="d1"><td colspan="10"><div class="drawer-inner">
+          <div class="drawer-title">🔍 IGBT 模块 FF300R12KE4 · 追踪详情</div>
+          <div class="drawer-grid">
+            <div class="drawer-item"><div class="di-label">采购订单号</div><div class="di-val" style="font-family:var(--mono);color:var(--blue)">PO-2025-0388</div><div class="di-sub">2025-05-28 下达</div></div>
+            <div class="drawer-item"><div class="di-label">供应商</div><div class="di-val">英飞凌（上海）半导体</div><div class="di-sub">战略供应商 · A级</div></div>
+            <div class="drawer-item"><div class="di-label">风险原因</div><div class="di-val" style="color:var(--red)">供货紧张，备货不足</div><div class="di-sub">李采购 · 2025-06-10 反馈</div></div>
+            <div class="drawer-item"><div class="di-label">已跟催次数</div><div class="di-val">3 次</div><div class="di-sub">最近跟催：2025-06-11</div></div>
+            <div class="drawer-item"><div class="di-label">结算单价</div><div class="di-val">¥ 1,280 / PCS</div><div class="di-sub">含税合同价</div></div>
+            <div class="drawer-item"><div class="di-label">订单金额</div><div class="di-val">¥ 38,400</div><div class="di-sub">含税</div></div>
+            <div class="drawer-item"><div class="di-label">影响评估</div><div class="di-val" style="color:var(--orange)">关键路径物料</div><div class="di-sub">影响 WO-0488 整体交期</div></div>
+            <div class="drawer-item"><div class="di-label">建议动作</div><div class="di-val" style="color:var(--red);font-size:12px;">紧急寻找备选供应商</div><div class="di-sub">或与计划协商推迟工单</div></div>
+          </div>
+        </div></td></tr>
+
+        <!-- R2 -->
+        <tr class="row-danger">
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">2</div></td>
+          <td><div class="td-p"><div class="mat-name">特种防爆铜排 TBMC-100A</div><div class="mat-code">MAT-CAB-00308</div><div class="mat-spec">防爆型 · 100A · 铜质</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-purchase">采购料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">12 根</span></div></td>
+          <td><div class="td-p">
+            <div class="step-track">
+              <div class="step-cap cap-done"><span class="cap-icon">📋</span><span class="cap-text">需求拆分</span><div class="step-tip"><strong>✅ 需求拆分 · 完成</strong>2025-05-25</div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">⚖️</span><span class="cap-text">慧采比价</span><div class="step-tip"><strong>✅ 慧采比价 · 完成</strong>3家报价，最低 ¥480/根<br>广州铜博报价偏高 12%</div></div>
+              <div class="step-arrow arrow-half">›</div>
+              <div class="step-cap cap-active"><span class="cap-icon">📝</span><span class="cap-text">慧采合同</span><div class="step-tip"><strong>⏳ 慧采合同 · 谈判中</strong>卡点：价格分歧<br>供应商报价偏高 12%<br>反馈人：<b>王采购</b> · 06-09</div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">🚚</span><span class="cap-text">供应商到货</span><div class="step-tip"><strong>⬜ 供应商到货 · 待进行</strong>合同签订后方可下单</div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">🧾</span><span class="cap-text">结算完成</span><div class="step-tip"><strong>⬜ 结算完成 · 待进行</strong></div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">💳</span><span class="cap-text">付款完成</span><div class="step-tip"><strong>⬜ 付款完成 · 待进行</strong></div></div>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell">
+            <div class="date-val" style="color:var(--red)">06-28</div>
+            <div class="date-by">采购员预估</div>
+            <div class="date-by"><b>王采购</b> · 06-09</div>
+          </div></div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val" style="color:var(--yellow)">06-18</div><div class="date-by">生产需求</div></div></div></td>
+          <td><div class="td-p"><span class="diff-over">延 +10天</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv3">🚨 3级</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;" onclick="toggleDrawer('d2')">详情</button></div></td>
+        </tr>
+        <tr class="drawer" id="d2"><td colspan="10"><div class="drawer-inner">
+          <div class="drawer-title">🔍 特种防爆铜排 TBMC-100A · 追踪详情</div>
+          <div class="drawer-grid">
+            <div class="drawer-item"><div class="di-label">当前卡点</div><div class="di-val" style="color:var(--orange)">合同价格分歧</div><div class="di-sub">供应商报价偏高 12%</div></div>
+            <div class="drawer-item"><div class="di-label">供应商</div><div class="di-val">广州铜博电气</div><div class="di-sub">普通供应商</div></div>
+            <div class="drawer-item"><div class="di-label">比价情况</div><div class="di-val">3家已完成报价</div><div class="di-sub">最低报价 ¥480/根</div></div>
+            <div class="drawer-item"><div class="di-label">建议动作</div><div class="di-val" style="color:var(--orange);font-size:12px;">加速合同谈判或换次低价供应商</div></div>
+          </div>
+        </div></td></tr>
+
+        <!-- R3 -->
+        <tr class="row-danger">
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">3</div></td>
+          <td><div class="td-p"><div class="mat-name">DSP 控制板 TMS320F28335</div><div class="mat-code">MAT-PCB-00092</div><div class="mat-spec">TI · 定制板卡 · 12片</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-purchase">采购料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">12 片</span></div></td>
+          <td><div class="td-p">
+            <div class="step-track">
+              <div class="step-cap cap-done"><span class="cap-icon">📋</span><span class="cap-text">需求拆分</span><div class="step-tip"><strong>✅ 需求拆分 · 完成</strong>2025-05-25</div></div>
+              <div class="step-arrow arrow-half">›</div>
+              <div class="step-cap cap-active"><span class="cap-icon">⚖️</span><span class="cap-text">慧采比价</span><div class="step-tip"><strong>⏳ 慧采比价 · 进行中</strong>已收到 2 家报价<br>待第 3 家报价截止：06-15<br>反馈人：<b>李采购</b> · 06-12</div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">📝</span><span class="cap-text">慧采合同</span><div class="step-tip"><strong>⬜ 慧采合同 · 待进行</strong></div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">🚚</span><span class="cap-text">供应商到货</span><div class="step-tip"><strong>⬜ 供应商到货 · 待进行</strong>定制板卡生产周期约 28天</div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">🧾</span><span class="cap-text">结算完成</span><div class="step-tip"><strong>⬜ 结算完成 · 待进行</strong></div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">💳</span><span class="cap-text">付款完成</span><div class="step-tip"><strong>⬜ 付款完成 · 待进行</strong></div></div>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell">
+            <div class="date-val" style="color:var(--red)">07-10</div>
+            <div class="date-by">采购员预估</div>
+            <div class="date-by"><b>李采购</b> · 06-12</div>
+          </div></div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val" style="color:var(--yellow)">06-22</div><div class="date-by">生产需求</div></div></div></td>
+          <td><div class="td-p"><span class="diff-over">延 +18天</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv3">🚨 3级</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;" onclick="toggleDrawer('d3')">详情</button></div></td>
+        </tr>
+        <tr class="drawer" id="d3"><td colspan="10"><div class="drawer-inner">
+          <div class="drawer-title">🔍 DSP 控制板 TMS320F28335 · 追踪详情</div>
+          <div class="drawer-grid">
+            <div class="drawer-item"><div class="di-label">风险根因</div><div class="di-val" style="color:var(--red)">定制板卡交期长</div><div class="di-sub">生产周期约 28 天</div></div>
+            <div class="drawer-item"><div class="di-label">当前状态</div><div class="di-val">比价中 · 2家已报价</div><div class="di-sub">待第 3 家截止 06-15</div></div>
+            <div class="drawer-item"><div class="di-label">紧急建议</div><div class="di-val" style="color:var(--red);font-size:12px;">立即下单，无法等比价</div><div class="di-sub">建议绕过比价流程</div></div>
+            <div class="drawer-item"><div class="di-label">影响评估</div><div class="di-val">WO-0488 整体延期风险</div><div class="di-sub">关键路径，不可替代</div></div>
+          </div>
+        </div></td></tr>
+
+        <!-- ===== 2级橙色 ===== -->
+        <tr class="group-row"><td colspan="10"><div class="group-label">🟠 2级橙色预警 · 缓冲 ≤ 3天，需持续关注（3条）</div></td></tr>
+
+        <!-- R4 -->
+        <tr class="row-warn">
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">4</div></td>
+          <td><div class="td-p"><div class="mat-name">断路器 ABB S203-C32</div><div class="mat-code">MAT-ELC-00231</div><div class="mat-spec">ABB · 3P · 32A · 200只</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-purchase">采购料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">200 只</span></div></td>
+          <td><div class="td-p">
+            <div class="step-track">
+              <div class="step-cap cap-done"><span class="cap-icon">📋</span><span class="cap-text">需求拆分</span><div class="step-tip"><strong>✅ 需求拆分 · 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">⚖️</span><span class="cap-text">慧采比价</span><div class="step-tip"><strong>✅ 慧采比价 · 完成</strong>授权代理商，免比价</div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">📝</span><span class="cap-text">慧采合同</span><div class="step-tip"><strong>✅ 慧采合同 · 已签</strong>合同号：CT-2025-0249</div></div>
+              <div class="step-arrow arrow-half">›</div>
+              <div class="step-cap cap-active"><span class="cap-icon">🚚</span><span class="cap-text">供应商到货</span><div class="step-tip"><strong>⏳ 供应商到货 · 在途</strong>物流单：SF1234567890<br>供应商承诺：2025-06-17<br>反馈人：<b>王采购</b> · 06-08</div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">🧾</span><span class="cap-text">结算完成</span><div class="step-tip"><strong>⬜ 结算完成 · 待到货后进行</strong></div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">💳</span><span class="cap-text">付款完成</span><div class="step-tip"><strong>⬜ 付款完成 · 待进行</strong></div></div>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell">
+            <div class="date-val" style="color:var(--orange)">06-17</div>
+            <div class="date-by">供应商承诺</div>
+            <div class="date-by"><b>王采购</b> · 06-08</div>
+          </div></div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val">06-18</div><div class="date-by">生产需求</div></div></div></td>
+          <td><div class="td-p"><span class="diff-tight">提前 1天</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv2">🟠 2级</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;" onclick="toggleDrawer('d4')">详情</button></div></td>
+        </tr>
+        <tr class="drawer" id="d4"><td colspan="10"><div class="drawer-inner">
+          <div class="drawer-title">🔍 断路器 ABB S203-C32 · 追踪详情</div>
+          <div class="drawer-grid">
+            <div class="drawer-item"><div class="di-label">物流单号</div><div class="di-val" style="font-family:var(--mono);color:var(--blue)">SF1234567890</div><div class="di-sub">顺丰快递 · 在途中</div></div>
+            <div class="drawer-item"><div class="di-label">供应商</div><div class="di-val">上海ABB授权总代</div><div class="di-sub">AA级供应商</div></div>
+            <div class="drawer-item"><div class="di-label">风险提示</div><div class="di-val" style="color:var(--orange)">缓冲仅 1 天</div><div class="di-sub">物流延误将直接影响生产</div></div>
+            <div class="drawer-item"><div class="di-label">建议动作</div><div class="di-val" style="font-size:12px;">持续跟踪物流，优先验收</div></div>
+          </div>
+        </div></td></tr>
+
+        <!-- R5 -->
+        <tr class="row-warn">
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">5</div></td>
+          <td><div class="td-p"><div class="mat-name">开关电源模块 PSU-240W-48V</div><div class="mat-code">MAT-ELC-00147</div><div class="mat-spec">明纬 · 240W/48V · 30PCS</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-purchase">采购料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">30 PCS</span></div></td>
+          <td><div class="td-p">
+            <div class="step-track">
+              <div class="step-cap cap-done"><span class="cap-icon">📋</span><span class="cap-text">需求拆分</span><div class="step-tip"><strong>✅ 需求拆分 · 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">⚖️</span><span class="cap-text">慧采比价</span><div class="step-tip"><strong>✅ 慧采比价 · 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">📝</span><span class="cap-text">慧采合同</span><div class="step-tip"><strong>✅ 慧采合同 · 已签</strong>合同号：CT-2025-0251</div></div>
+              <div class="step-arrow arrow-half">›</div>
+              <div class="step-cap cap-active"><span class="cap-icon">🚚</span><span class="cap-text">供应商到货</span><div class="step-tip"><strong>⏳ 供应商到货 · 在途</strong>供应商承诺：2025-06-18<br>反馈人：<b>李采购</b> · 06-05</div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">🧾</span><span class="cap-text">结算完成</span><div class="step-tip"><strong>⬜ 结算完成 · 待进行</strong></div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">💳</span><span class="cap-text">付款完成</span><div class="step-tip"><strong>⬜ 付款完成 · 待进行</strong></div></div>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell">
+            <div class="date-val" style="color:var(--orange)">06-18</div>
+            <div class="date-by">供应商承诺</div>
+            <div class="date-by"><b>李采购</b> · 06-05</div>
+          </div></div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val">06-20</div><div class="date-by">生产需求</div></div></div></td>
+          <td><div class="td-p"><span class="diff-tight">提前 2天</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv2">🟠 2级</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;">详情</button></div></td>
+        </tr>
+
+        <!-- ===== 1级黄色 ===== -->
+        <tr class="group-row"><td colspan="10"><div class="group-label">🟡 1级黄色预警 · 缓冲 4~7天，持续关注（2条）</div></td></tr>
+
+        <!-- R6 -->
+        <tr>
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">6</div></td>
+          <td><div class="td-p"><div class="mat-name">冷轧钢板 1.5mm Q235</div><div class="mat-code">MAT-SHT-00019</div><div class="mat-spec">1220×2440 · 600kg</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-purchase">采购料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">600 kg</span></div></td>
+          <td><div class="td-p">
+            <div class="step-track">
+              <div class="step-cap cap-done"><span class="cap-icon">📋</span><span class="cap-text">需求拆分</span><div class="step-tip"><strong>✅ 需求拆分 · 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">⚖️</span><span class="cap-text">慧采比价</span><div class="step-tip"><strong>✅ 慧采比价 · 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">📝</span><span class="cap-text">慧采合同</span><div class="step-tip"><strong>✅ 慧采合同 · 已签</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">🚚</span><span class="cap-text">供应商到货</span><div class="step-tip"><strong>✅ 供应商到货 · 已到货</strong>到货日期：2025-06-12<br>确认人：<b>仓管李明</b></div></div>
+              <div class="step-arrow arrow-half">›</div>
+              <div class="step-cap cap-active"><span class="cap-icon">🧾</span><span class="cap-text">结算完成</span><div class="step-tip"><strong>⏳ 结算完成 · 进行中</strong>发票已收，审核中<br>经办人：<b>财务王芳</b></div></div>
+              <div class="step-arrow arrow-none">›</div>
+              <div class="step-cap cap-pending"><span class="cap-icon">💳</span><span class="cap-text">付款完成</span><div class="step-tip"><strong>⬜ 付款完成 · 待进行</strong></div></div>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell">
+            <div class="date-val" style="color:var(--green)">06-12 ✓</div>
+            <div class="date-by">已实际到货</div>
+            <div class="date-by"><b>仓管李明</b> 确认</div>
+          </div></div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val">06-19</div><div class="date-by">生产需求</div></div></div></td>
+          <td><div class="td-p"><span class="diff-ok">提前 7天</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv1">🟡 1级</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;">详情</button></div></td>
+        </tr>
+
+        <!-- ===== 无风险 ===== -->
+        <tr class="group-row"><td colspan="10"><div class="group-label">✅ 无风险 · 库存充足或采购已完成（共 39 条，展示 2 条）</div></td></tr>
+
+        <!-- R7 库存料 -->
+        <tr>
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">7</div></td>
+          <td><div class="td-p"><div class="mat-name">铜排 TMY-60×6</div><div class="mat-code">MAT-CAB-00083</div><div class="mat-spec">T2铜 · 60×6mm · 36m</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-stock">库存料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">36 m</span></div></td>
+          <td><div class="td-p">
+            <div style="display:inline-flex;align-items:center;gap:8px;">
+              <span style="background:var(--green-light);color:var(--green);border:1px solid rgba(13,159,110,0.3);padding:5px 12px;border-radius:7px;font-size:12px;font-weight:700;">✅ 库存已就绪 · 无需采购</span>
+              <span style="font-size:11px;color:var(--text3);">现有库存 140m &gt; 需求 36m &nbsp;·&nbsp; 仓库 A仓/03-B-07</span>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val" style="color:var(--green)">库存就绪</div></div></div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val">06-19</div><div class="date-by">生产需求</div></div></div></td>
+          <td><div class="td-p"><span class="diff-ok">充足</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv0">✅ 无风险</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;">详情</button></div></td>
+        </tr>
+
+        <!-- R8 全流程完成 -->
+        <tr>
+          <td><div class="td-p" style="color:var(--text3);font-size:11px;">8</div></td>
+          <td><div class="td-p"><div class="mat-name">BV线 2.5mm² 阻燃铜芯</div><div class="mat-code">MAT-WIR-00045</div><div class="mat-spec">红/蓝/黄绿三色 · 3000m</div></div></td>
+          <td><div class="td-p"><span class="type-badge type-purchase">采购料</span></div></td>
+          <td><div class="td-p"><span class="qty-cell">3000 m</span></div></td>
+          <td><div class="td-p">
+            <div class="step-track">
+              <div class="step-cap cap-done"><span class="cap-icon">📋</span><span class="cap-text">需求拆分</span><div class="step-tip"><strong>✅ 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">⚖️</span><span class="cap-text">慧采比价</span><div class="step-tip"><strong>✅ 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">📝</span><span class="cap-text">慧采合同</span><div class="step-tip"><strong>✅ 完成</strong></div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">🚚</span><span class="cap-text">供应商到货</span><div class="step-tip"><strong>✅ 已到货</strong>06-08 仓库确认</div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">🧾</span><span class="cap-text">结算完成</span><div class="step-tip"><strong>✅ 结算完成</strong>06-09</div></div>
+              <div class="step-arrow arrow-done">›</div>
+              <div class="step-cap cap-done"><span class="cap-icon">💳</span><span class="cap-text">付款完成</span><div class="step-tip"><strong>✅ 付款完成</strong>06-10 · ¥9,600</div></div>
+            </div>
+          </div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val" style="color:var(--green)">06-08 ✓</div><div class="date-by"><b>仓库</b>已确认</div></div></div></td>
+          <td><div class="td-p"><div class="date-cell"><div class="date-val">06-18</div><div class="date-by">生产需求</div></div></div></td>
+          <td><div class="td-p"><span class="diff-ok">提前 10天</span></div></td>
+          <td><div class="td-p"><span class="warn-lv lv0">✅ 无风险</span></div></td>
+          <td><div class="td-p"><button class="btn btn-ghost" style="padding:3px 9px;font-size:11px;">详情</button></div></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div><!-- table-wrap -->
+
+</div><!-- page -->
+
+<script>
+// ===== Theme Toggle =====
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('tt-light').classList.toggle('active', isDark);
+  document.getElementById('tt-dark').classList.toggle('active', !isDark);
+}
+
+// ===== Drawer Toggle =====
+function toggleDrawer(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.drawer').forEach(d => d.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
+
+// ===== Product Select =====
+function selectProd(el) {
+  document.querySelectorAll('.ps-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工时归集 · 报工管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F0F4F8;
+    --surface: #FFFFFF;
+    --surface2: #F7F9FC;
+    --border: #E2E8F0;
+    --blue: #1A56DB;
+    --blue-light: #EBF2FF;
+    --green: #0D9F6E;
+    --green-light: #ECFDF5;
+    --orange: #F05252;
+    --orange-light: #FEF2F2;
+    --yellow: #D97706;
+    --yellow-light: #FFFBEB;
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+    --text-primary: #1A202C;
+    --text-secondary: #4A5568;
+    --text-muted: #A0AEC0;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans SC', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text-primary); min-height: 100vh; font-size: 14px; }
+
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+  .topbar-brand { font-weight: 700; font-size: 16px; color: var(--blue); }
+  .topbar-sep { color: var(--border); }
+  .breadcrumb { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+  .breadcrumb span { color: var(--text-muted); }
+  .topbar-actions { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .btn { padding: 7px 16px; border-radius: 8px; font-size: 13px; font-family: var(--sans); cursor: pointer; border: none; font-weight: 500; transition: all 0.15s; }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-primary:hover { background: #1646B0; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
+  .btn-ghost:hover { background: var(--surface2); }
+  .btn-green { background: var(--green); color: #fff; }
+
+  .page { max-width: 1280px; margin: 0 auto; padding: 28px 32px; }
+
+  /* TAB */
+  .tab-bar { display: flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px; margin-bottom: 24px; width: fit-content; }
+  .tab { padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
+  .tab.active { background: var(--blue); color: #fff; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+  .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.4px; margin-bottom: 6px; }
+  .stat-val { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+  .stat-val.blue { color: var(--blue); }
+  .stat-val.green { color: var(--green); }
+  .stat-val.orange { color: var(--orange); }
+  .stat-val.yellow { color: var(--yellow); }
+  .stat-val.purple { color: var(--purple); }
+  .stat-sub { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+
+  /* LAYOUT */
+  .grid-3col { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 20px; }
+  .panel-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .panel-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+  .dot.green { background: var(--green); }
+  .dot.orange { background: var(--orange); }
+  .dot.purple { background: var(--purple); }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--surface2); }
+  th { padding: 10px 14px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-align: left; border-bottom: 1px solid var(--border); letter-spacing: 0.3px; }
+  td { padding: 11px 14px; font-size: 13px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .td-mono { font-family: var(--mono); font-size: 12px; color: var(--blue); }
+  .td-num { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+  .badge-red { background: var(--orange-light); color: var(--orange); }
+  .badge-blue { background: var(--blue-light); color: var(--blue); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+  /* WORKER CARD */
+  .worker-list { padding: 8px 0; }
+  .worker-row { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; }
+  .worker-row:last-child { border-bottom: none; }
+  .worker-row:hover { background: var(--surface2); }
+  .worker-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .av-blue { background: linear-gradient(135deg, var(--blue), #5B9BF8); }
+  .av-green { background: linear-gradient(135deg, var(--green), #34D399); }
+  .av-purple { background: linear-gradient(135deg, var(--purple), #A78BFA); }
+  .av-yellow { background: linear-gradient(135deg, #F59E0B, #FCD34D); }
+  .av-orange { background: linear-gradient(135deg, var(--orange), #FC8181); }
+  .worker-info { flex: 1; }
+  .worker-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .worker-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .worker-hours { text-align: right; }
+  .worker-hours-val { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--blue); }
+  .worker-hours-label { font-size: 11px; color: var(--text-muted); }
+  .hours-bar-wrap { width: 80px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 4px; margin-left: auto; }
+  .hours-bar-fill { height: 100%; border-radius: 2px; background: var(--blue); }
+
+  /* ALERT ROW */
+  .alert-row td { background: #FFFBEB !important; }
+  .alert-row:hover td { background: #FEF9E7 !important; }
+
+  /* VALIDATION SECTION */
+  .validation-box { background: var(--orange-light); border: 1.5px solid #FCA5A5; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
+  .validation-title { font-size: 13px; font-weight: 700; color: var(--orange); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .v-item { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #FCA5A5; }
+  .v-item:last-child { border-bottom: none; }
+  .v-name { font-weight: 600; color: var(--text-primary); min-width: 60px; }
+  .v-detail { flex: 1; color: var(--text-secondary); }
+  .v-diff { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--orange); }
+
+  /* WECHAT BOX */
+  .wechat-box { background: linear-gradient(135deg, #07C160 0%, #09A852 100%); border-radius: 14px; padding: 20px 24px; color: #fff; margin-bottom: 20px; }
+  .wechat-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .wechat-sub { font-size: 13px; opacity: 0.85; margin-bottom: 16px; }
+  .wechat-features { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .wechat-feat { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 10px 14px; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+
+  /* COST TABLE highlight */
+  .cost-highlight { font-family: var(--mono); font-weight: 700; color: var(--blue); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .page > * { animation: fadeUp 0.3s ease both; }
+  .page > *:nth-child(2) { animation-delay: 0.05s; }
+  .page > *:nth-child(3) { animation-delay: 0.1s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">⚡ 轻量ERP</div>
+  <div class="topbar-sep">/</div>
+  <div class="breadcrumb">生产管理 <span>›</span> 工时归集 <span>›</span> 报工管理</div>
+  <div class="topbar-actions">
+    <span style="font-size:12px;color:var(--text-muted)">2025-06-12（今日）&nbsp; 装配一车间</span>
+    <button class="btn btn-ghost">工价设置</button>
+    <button class="btn btn-green">审核全部</button>
+    <button class="btn btn-primary">导出工时报表</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- TABS -->
+  <div class="tab-bar">
+    <div class="tab active">今日报工</div>
+    <div class="tab">本月汇总</div>
+    <div class="tab">工人工资</div>
+    <div class="tab">工价管理</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">今日在岗人数</div>
+      <div class="stat-val blue">28</div>
+      <div class="stat-sub">钉钉打卡确认</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">已报工人数</div>
+      <div class="stat-val green">23</div>
+      <div class="stat-sub">报工率 82%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">异常报工预警</div>
+      <div class="stat-val orange">3</div>
+      <div class="stat-sub">与钉钉考勤不符</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">今日总报工工时</div>
+      <div class="stat-val purple">186.5<span style="font-size:14px;font-weight:400;color:var(--text-secondary)"> h</span></div>
+      <div class="stat-sub">人均 8.1h</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">今日人工成本估算</div>
+      <div class="stat-val yellow">¥ 3,916</div>
+      <div class="stat-sub">按工价实时计算</div>
+    </div>
+  </div>
+
+  <!-- VALIDATION ALERT -->
+  <div class="validation-box">
+    <div class="validation-title">⚠️ 工时校验异常提醒（3 条）&nbsp;·&nbsp;与钉钉考勤数据不一致，请审核确认</div>
+    <div class="v-item">
+      <div class="v-name">李建国</div>
+      <div class="v-detail">报工工时 <strong>11.5h</strong> &nbsp;·&nbsp; 钉钉考勤 <strong>9h</strong> &nbsp;·&nbsp; 差异原因：未说明</div>
+      <div class="v-diff">超报 +2.5h</div>
+      <button class="btn btn-ghost" style="padding:4px 12px;font-size:12px;">处理</button>
+    </div>
+    <div class="v-item">
+      <div class="v-name">赵小强</div>
+      <div class="v-detail">报工工时 <strong>6h</strong> &nbsp;·&nbsp; 钉钉考勤 <strong>9.5h</strong> &nbsp;·&nbsp; 差异原因：下午协助其他班组</div>
+      <div class="v-diff">少报 -3.5h</div>
+      <button class="btn btn-ghost" style="padding:4px 12px;font-size:12px;">处理</button>
+    </div>
+    <div class="v-item">
+      <div class="v-name">王芳</div>
+      <div class="v-detail">钉钉显示已打卡 <strong>9h</strong>，但今日<strong>未报工</strong></div>
+      <div class="v-diff">漏报</div>
+      <button class="btn btn-ghost" style="padding:4px 12px;font-size:12px;">提醒</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="grid-3col">
+
+    <!-- REPORT TABLE -->
+    <div>
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header">
+          <div class="panel-title"><div class="dot green"></div>今日报工明细</div>
+          <span style="font-size:12px;color:var(--text-muted)">23 / 28 人已报工</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>工人</th>
+              <th>班组</th>
+              <th>执行工单</th>
+              <th>报工工时</th>
+              <th>考勤工时</th>
+              <th>工价</th>
+              <th>本日成本</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="worker-avatar av-blue" style="width:28px;height:28px;font-size:11px;border-radius:50%;">张</div>张伟</div></td>
+              <td>装配一组</td>
+              <td class="td-mono">WO-0488</td>
+              <td class="td-num">9.0 h</td>
+              <td class="td-num" style="color:var(--green)">9.0 h ✓</td>
+              <td>¥22/h</td>
+              <td class="cost-highlight">¥ 198</td>
+              <td><span class="badge badge-green">已审核</span></td>
+              <td><span style="font-size:12px;color:var(--blue);cursor:pointer;">详情</span></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="worker-avatar av-green" style="width:28px;height:28px;font-size:11px;border-radius:50%;">陈</div>陈建华</div></td>
+              <td>装配一组</td>
+              <td class="td-mono">WO-0488</td>
+              <td class="td-num">8.5 h</td>
+              <td class="td-num" style="color:var(--green)">9.0 h ✓</td>
+              <td>¥20/h</td>
+              <td class="cost-highlight">¥ 170</td>
+              <td><span class="badge badge-green">已审核</span></td>
+              <td><span style="font-size:12px;color:var(--blue);cursor:pointer;">详情</span></td>
+            </tr>
+            <tr class="alert-row">
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="worker-avatar av-orange" style="width:28px;height:28px;font-size:11px;border-radius:50%;">李</div>李建国</div></td>
+              <td>装配二组</td>
+              <td class="td-mono">WO-0491</td>
+              <td class="td-num" style="color:var(--orange)">11.5 h</td>
+              <td class="td-num">9.0 h</td>
+              <td>¥22/h</td>
+              <td class="cost-highlight" style="color:var(--orange)">¥ 253</td>
+              <td><span class="badge badge-red">待确认</span></td>
+              <td><span style="font-size:12px;color:var(--orange);cursor:pointer;font-weight:600;">处理</span></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="worker-avatar av-purple" style="width:28px;height:28px;font-size:11px;border-radius:50%;">刘</div>刘洋</div></td>
+              <td>装配二组</td>
+              <td class="td-mono">WO-0491</td>
+              <td class="td-num">8.0 h</td>
+              <td class="td-num" style="color:var(--green)">8.0 h ✓</td>
+              <td>¥20/h</td>
+              <td class="cost-highlight">¥ 160</td>
+              <td><span class="badge badge-green">已审核</span></td>
+              <td><span style="font-size:12px;color:var(--blue);cursor:pointer;">详情</span></td>
+            </tr>
+            <tr class="alert-row">
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="worker-avatar av-yellow" style="width:28px;height:28px;font-size:11px;border-radius:50%;">赵</div>赵小强</div></td>
+              <td>装配一组</td>
+              <td class="td-mono">WO-0488</td>
+              <td class="td-num" style="color:var(--yellow)">6.0 h</td>
+              <td class="td-num">9.5 h</td>
+              <td>¥18/h</td>
+              <td class="cost-highlight">¥ 108</td>
+              <td><span class="badge badge-yellow">差异待核</span></td>
+              <td><span style="font-size:12px;color:var(--orange);cursor:pointer;font-weight:600;">处理</span></td>
+            </tr>
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div class="worker-avatar av-blue" style="width:28px;height:28px;font-size:11px;border-radius:50%;">孙</div>孙磊</div></td>
+              <td>装配三组</td>
+              <td class="td-mono">WO-0494</td>
+              <td class="td-num">9.0 h</td>
+              <td class="td-num" style="color:var(--green)">9.0 h ✓</td>
+              <td>¥20/h</td>
+              <td class="cost-highlight">¥ 180</td>
+              <td><span class="badge badge-green">已审核</span></td>
+              <td><span style="font-size:12px;color:var(--blue);cursor:pointer;">详情</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text-muted);font-size:12px;" colspan="9" class="">
+                <div style="display:flex;align-items:center;gap:6px;padding:4px 0;"><span style="font-size:16px;">·</span>王芳 · 打卡 9h · 未报工 · 已发送微信提醒</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RIGHT: WORKERS + WECHAT -->
+    <div>
+      <!-- WECHAT -->
+      <div class="wechat-box">
+        <div class="wechat-title">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="white" opacity="0.2"/><path d="M7 8.5C7 6.57 8.57 5 10.5 5S14 6.57 14 8.5c0 1.32-.73 2.47-1.8 3.08L12 13H9l-.2-1.42C7.73 10.97 7 9.82 7 8.5z" fill="white"/></svg>
+          微信服务号推送
+        </div>
+        <div class="wechat-sub">工人通过微信登录报工，审核结果和月度工资自动推送</div>
+        <div class="wechat-features">
+          <div class="wechat-feat">📱 微信扫码登录</div>
+          <div class="wechat-feat">✅ 审核结果推送</div>
+          <div class="wechat-feat">💰 月度工资推送</div>
+          <div class="wechat-feat">⏰ 漏报提醒通知</div>
+        </div>
+      </div>
+
+      <!-- WORKER LIST -->
+      <div class="panel" style="margin-bottom:0">
+        <div class="panel-header">
+          <div class="panel-title"><div class="dot purple"></div>本月工时 TOP</div>
+          <span style="font-size:12px;color:var(--blue);cursor:pointer;font-weight:500">查看全员 →</span>
+        </div>
+        <div class="worker-list">
+          <div class="worker-row">
+            <div class="worker-avatar av-blue">张</div>
+            <div class="worker-info">
+              <div class="worker-name">张伟</div>
+              <div class="worker-meta">装配一组 · ¥22/h</div>
+            </div>
+            <div class="worker-hours">
+              <div class="worker-hours-val">198.5 h</div>
+              <div class="worker-hours-label">本月工时</div>
+              <div class="hours-bar-wrap"><div class="hours-bar-fill" style="width:92%"></div></div>
+            </div>
+          </div>
+          <div class="worker-row">
+            <div class="worker-avatar av-purple">刘</div>
+            <div class="worker-info">
+              <div class="worker-name">刘洋</div>
+              <div class="worker-meta">装配二组 · ¥20/h</div>
+            </div>
+            <div class="worker-hours">
+              <div class="worker-hours-val">192.0 h</div>
+              <div class="worker-hours-label">本月工时</div>
+              <div class="hours-bar-wrap"><div class="hours-bar-fill" style="width:88%"></div></div>
+            </div>
+          </div>
+          <div class="worker-row">
+            <div class="worker-avatar av-green">陈</div>
+            <div class="worker-info">
+              <div class="worker-name">陈建华</div>
+              <div class="worker-meta">装配一组 · ¥20/h</div>
+            </div>
+            <div class="worker-hours">
+              <div class="worker-hours-val">186.0 h</div>
+              <div class="worker-hours-label">本月工时</div>
+              <div class="hours-bar-wrap"><div class="hours-bar-fill" style="width:84%"></div></div>
+            </div>
+          </div>
+          <div class="worker-row">
+            <div class="worker-avatar av-yellow">孙</div>
+            <div class="worker-info">
+              <div class="worker-name">孙磊</div>
+              <div class="worker-meta">装配三组 · ¥20/h</div>
+            </div>
+            <div class="worker-hours">
+              <div class="worker-hours-val">175.5 h</div>
+              <div class="worker-hours-label">本月工时</div>
+              <div class="hours-bar-wrap"><div class="hours-bar-fill" style="width:79%"></div></div>
+            </div>
+          </div>
+          <div class="worker-row">
+            <div class="worker-avatar av-orange">李</div>
+            <div class="worker-info">
+              <div class="worker-name">李建国</div>
+              <div class="worker-meta">装配二组 · ¥22/h <span style="color:var(--orange)">⚠️</span></div>
+            </div>
+            <div class="worker-hours">
+              <div class="worker-hours-val">168.0 h</div>
+              <div class="worker-hours-label">本月工时</div>
+              <div class="hours-bar-wrap"><div class="hours-bar-fill" style="width:74%;background:var(--orange);"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
