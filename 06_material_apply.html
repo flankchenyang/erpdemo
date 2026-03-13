@@ -13,10 +13,21 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text
 :root{--mono:'JetBrains Mono',monospace;--sora:'Sora',sans-serif}
 
 /* sidebar */
-.sidebar{width:240px;background:var(--topbar);border-right:1px solid var(--border);height:100vh;position:fixed;top:0;left:0;z-index:201;padding:20px 0;overflow-y:auto;transition:background .25s,border-color .25s}
+.sidebar{width:240px;background:var(--topbar);border-right:1px solid var(--border);height:100vh;position:fixed;top:0;left:0;z-index:201;padding:20px 0;overflow-y:auto;transition:width 0.3s ease,background .25s,border-color .25s}
+.sidebar.collapsed{width:64px}
+.sidebar-toggle{position:absolute;top:20px;right:-12px;width:24px;height:24px;border-radius:50%;background:var(--topbar);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:202;transition:all 0.3s ease}
+.sidebar-toggle:hover{background:var(--surface2)}
+.toggle-icon{width:16px;height:16px;color:var(--text2);transition:transform 0.3s ease}
+.sidebar.collapsed .toggle-icon{transform:rotate(180deg)}
+.sidebar.collapsed .sidebar-brand h1{opacity:0;pointer-events:none;width:0}
+.sidebar.collapsed .nav-link span{opacity:0;pointer-events:none;width:0}
+.sidebar.collapsed .nav-section{opacity:0;pointer-events:none;width:0}
+.sidebar.collapsed .nav-link{justify-content:center;padding:10px 8px}
+.sidebar.collapsed .nav-icon{margin-right:0}
 
 /* main content */
-.main-content{margin-left:240px;width:calc(100% - 240px);min-height:100vh;display:flex;flex-direction:column}
+.main-content{margin-left:240px;width:calc(100% - 240px);min-height:100vh;display:flex;flex-direction:column;transition:margin-left 0.3s ease,width 0.3s ease}
+.sidebar.collapsed + .main-content{margin-left:64px;width:calc(100% - 64px)}
 .sidebar-brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:20px}
 .sidebar-brand h1{font-family:var(--sora);font-weight:800;font-size:16px;color:var(--blue);letter-spacing:-0.3px}
 .nav-menu{padding:0 12px}
@@ -224,6 +235,11 @@ tr:hover td{background:var(--surface2);transition:background .1s}
   <aside class="sidebar">
     <div class="sidebar-brand">
       <h1>ERP Demo</h1>
+      <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="toggle-icon">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
     </div>
     <nav class="nav-menu">
       <a href="index.html" class="nav-link">
@@ -750,5 +766,25 @@ function showToast(icon,msg){
 }
 </script>
   </div>
+
+  <script>
+    // 侧边栏切换功能
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('collapsed');
+      
+      // 保存状态到本地存储
+      const isCollapsed = sidebar.classList.contains('collapsed');
+      localStorage.setItem('sidebarCollapsed', isCollapsed);
+    }
+    
+    // 页面加载时恢复侧边栏状态
+    window.addEventListener('load', function() {
+      const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+      if (isCollapsed) {
+        document.querySelector('.sidebar').classList.add('collapsed');
+      }
+    });
+  </script>
 </body>
 </html>
