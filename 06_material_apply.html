@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>物料申请 · 新增物料编码</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+[data-theme="light"]{--bg:#F0F4F8;--bg2:#fff;--surface:#fff;--surface2:#F7F9FC;--surface3:#EEF2F7;--border:#E2E8F0;--border2:#CBD5E1;--text:#1A202C;--text2:#4A5568;--text3:#94A3B8;--topbar:#fff;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.04);--blue:#1A56DB;--blue-l:#EBF2FF;--blue-g:rgba(26,86,219,.1);--green:#0D9F6E;--green-l:#ECFDF5;--yellow:#D97706;--yellow-l:#FFFBEB;--red:#DC2626;--red-l:#FEF2F2;--purple:#7C3AED;--purple-l:#F5F3FF;--teal:#0891B2;--teal-l:#ECFEFF;--ai-bg:#0c1222;--ai-border:#1E3A6E;--ai-bot-bg:#111b33;--ai-user-bg:#1a3a6e;--ai-text:#c8d8f8;--ai-glow:rgba(99,160,255,.22);--overlay:rgba(15,22,40,.55)}
+[data-theme="dark"]{--bg:#0F1117;--bg2:#161820;--surface:#1E2028;--surface2:#252830;--surface3:#2C2F3A;--border:#2E3140;--border2:#383C4E;--text:#E8EAF0;--text2:#9CA3B8;--text3:#555A70;--topbar:#161820;--shadow:0 1px 3px rgba(0,0,0,.4);--blue:#4B8EF5;--blue-l:#1E3A6E;--blue-g:rgba(75,142,245,.15);--green:#22C55E;--green-l:#14532D;--yellow:#F59E0B;--yellow-l:#451A03;--red:#EF4444;--red-l:#450A0A;--purple:#A855F7;--purple-l:#3B0764;--teal:#14B8A6;--teal-l:#042F2E;--ai-bg:#070b16;--ai-border:#182d58;--ai-bot-bg:#0b1428;--ai-user-bg:#162d5c;--ai-text:#b8ccee;--ai-glow:rgba(99,160,255,.28);--overlay:rgba(0,0,0,.72)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);font-size:14px;transition:background .25s,color .25s;min-height:100vh}
+:root{--mono:'JetBrains Mono',monospace;--sora:'Sora',sans-serif}
+
+/* topbar */
+.topbar{background:var(--topbar);border-bottom:1px solid var(--border);padding:0 28px;height:54px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow);transition:background .25s}
+.brand{font-family:var(--sora);font-weight:800;font-size:15px;color:var(--blue);display:flex;align-items:center;gap:7px}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
+[data-theme="dark"] .brand-dot{box-shadow:0 0 8px var(--blue)}
+.sep{color:var(--border2)}
+.bc{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:5px}
+.bc span{color:var(--text3)}
+.tr{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tt{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 6px;cursor:pointer;user-select:none}
+.tt:hover{border-color:var(--blue)}
+.tto{padding:4px 10px;border-radius:14px;font-size:11px;font-weight:700;color:var(--text3);transition:all .2s;display:flex;align-items:center;gap:4px}
+.tto.active{background:var(--blue);color:#fff}
+.btn{padding:7px 16px;border-radius:8px;font-size:12px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;border:none;font-weight:600;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-g{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-g:hover{background:var(--surface2);color:var(--text)}
+.btn-b{background:var(--blue);color:#fff}
+.btn-b:hover{opacity:.88}
+
+/* page */
+.page{padding:22px 28px;max-width:1400px;margin:0 auto}
+.ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.ph h1{font-family:var(--sora);font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:5px}
+.ph p{font-size:13px;color:var(--text2)}
+.ph-right{display:flex;gap:12px;align-items:center}
+
+/* ai fab */
+.ai-fab{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1A56DB,#7C3AED);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;box-shadow:0 2px 12px rgba(99,102,241,.4);position:relative}
+.ai-fab:hover{transform:scale(1.1);box-shadow:0 4px 20px rgba(99,102,241,.6)}
+.ai-fab-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ai-fab-wrap span{font-size:9px;color:var(--text3);font-weight:700}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.sc-b::before{background:var(--blue)}.sc-g::before{background:var(--green)}.sc-y::before{background:var(--yellow)}.sc-p::before{background:var(--purple)}
+[data-theme="dark"] .sc-b::before{box-shadow:0 0 10px var(--blue)}
+[data-theme="dark"] .sc-g::before{box-shadow:0 0 10px var(--green)}
+[data-theme="dark"] .sc-y::before{box-shadow:0 0 10px var(--yellow)}
+[data-theme="dark"] .sc-p::before{box-shadow:0 0 10px var(--purple)}
+.sc label{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.5px;display:block;margin-bottom:8px}
+.sc .v{font-family:var(--sora);font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1}
+.sc small{font-size:11px;color:var(--text3);display:block;margin-top:5px}
+.vb{color:var(--blue)}.vg{color:var(--green)}.vy{color:var(--yellow)}.vp{color:var(--purple)}
+
+/* table wrap */
+.tw{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.toolbar{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:var(--surface2)}
+.fi{padding:7px 12px;border-radius:8px;border:1px solid var(--border2);font-size:12px;font-family:'Noto Sans SC',sans-serif;background:var(--surface);outline:none;color:var(--text);width:200px;transition:border-color .15s}
+.fi:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.fs{padding:7px 10px;border-radius:8px;border:1px solid var(--border2);font-size:12px;font-family:'Noto Sans SC',sans-serif;background:var(--surface);color:var(--text);outline:none;cursor:pointer}
+.tbr{margin-left:auto;display:flex;gap:8px;align-items:center}
+
+table{width:100%;border-collapse:collapse}
+thead tr{background:var(--surface2)}
+th{padding:10px 14px;font-size:11px;font-weight:700;color:var(--text3);text-align:left;border-bottom:1px solid var(--border);letter-spacing:.5px;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2);transition:background .1s}
+.cc{font-family:var(--mono);font-size:12px;font-weight:600;white-space:nowrap}
+.seg-co{color:var(--text3)}.seg-bz{color:var(--purple)}.seg-ct{color:var(--teal)}.seg-sq{color:var(--green);font-weight:700}
+.mn{font-size:13px;font-weight:600;color:var(--text)}
+.ms{font-size:11px;color:var(--text3);margin-top:2px}
+.tbadge{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
+.tb-c{background:var(--blue-l);color:var(--blue);border:1px solid rgba(26,86,219,.2)}
+.sb{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.sb-ok{background:var(--green-l);color:var(--green);border:1px solid rgba(13,159,110,.25)}
+.sb-pd{background:var(--yellow-l);color:var(--yellow);border:1px solid rgba(217,119,6,.25)}
+.ab{padding:4px 10px;border-radius:6px;font-size:11px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);font-weight:600;transition:all .15s}
+.ab:hover{background:var(--surface3);color:var(--text)}
+
+/* === MODAL BASE === */
+.backdrop{display:none;position:fixed;inset:0;background:var(--overlay);z-index:500;backdrop-filter:blur(4px);align-items:center;justify-content:center}
+.backdrop.open{display:flex;animation:bfIn .2s ease}
+@keyframes bfIn{from{opacity:0}to{opacity:1}}
+@keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* APPLY MODAL */
+.am{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:700px;max-width:96vw;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:su .25s ease}
+.mh{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mt{font-family:var(--sora);font-size:17px;font-weight:700}
+.mc{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:16px;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.mc:hover{background:var(--red-l);color:var(--red);border-color:var(--red)}
+.mb{padding:22px 24px}
+.mf{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+
+/* code preview */
+.cpv{background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:22px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
+.cpv-l .lbl{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.5px;margin-bottom:8px}
+.cpv-code{font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:1.5px;display:flex;gap:3px;align-items:center;flex-wrap:wrap}
+.cs{padding:4px 8px;border-radius:6px;font-size:15px;letter-spacing:.5px}
+.cs-co{background:rgba(148,163,184,.1);color:var(--text2)}
+.cs-bz{background:var(--purple-l);color:var(--purple)}
+.cs-ct{background:var(--teal-l);color:var(--teal)}
+.cs-sq{background:var(--green-l);color:var(--green);font-weight:800}
+.cdot{color:var(--border2);font-size:13px}
+.cpv-legend{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cleg{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.2px}
+.cpv-hint{font-size:11px;color:var(--text3);line-height:1.75;max-width:200px;text-align:right}
+.cpv-hint b{color:var(--blue)}
+
+/* form */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.ff{grid-column:1/-1}
+.fg>div{display:flex;flex-direction:column;gap:6px}
+.fl{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.3px}
+.fl .req{color:var(--red)}
+.finp,.fsel,.ftxt{padding:9px 12px;border-radius:8px;border:1px solid var(--border2);font-size:13px;font-family:'Noto Sans SC',sans-serif;background:var(--surface);color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+.finp:focus,.fsel:focus,.ftxt:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.ftxt{resize:vertical;min-height:70px;line-height:1.6}
+.fhint{font-size:10px;color:var(--text3);line-height:1.5}
+
+/* === AI MODAL === */
+.ai-wrap{width:520px;max-width:96vw;height:650px;border-radius:20px;background:var(--ai-bg);border:1px solid var(--ai-border);box-shadow:0 0 0 1px rgba(99,160,255,.08),0 30px 90px rgba(0,0,20,.7);display:flex;flex-direction:column;overflow:hidden;animation:su .3s ease;position:relative}
+.ai-wrap::after{content:'';position:absolute;top:0;left:0;right:0;height:180px;background:radial-gradient(ellipse at 50% -20%,rgba(99,102,241,.18) 0%,transparent 70%);pointer-events:none}
+
+.aih{padding:16px 20px;border-bottom:1px solid var(--ai-border);display:flex;align-items:center;gap:12px;position:relative;z-index:2;background:rgba(0,0,0,.15)}
+.ailo{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1A56DB,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px rgba(99,102,241,.5);animation:aip 3s infinite}
+@keyframes aip{0%,100%{box-shadow:0 0 16px rgba(99,102,241,.4)}50%{box-shadow:0 0 28px rgba(99,102,241,.75)}}
+.ai-name-w .an{font-family:var(--sora);font-size:14px;font-weight:700;color:#E8F0FF;letter-spacing:-.2px}
+.ai-name-w .as{font-size:11px;color:#6080A8;margin-top:2px;display:flex;align-items:center;gap:5px}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:plz 2s infinite}
+@keyframes plz{0%,100%{opacity:1}50%{opacity:.35}}
+.ai-cls{margin-left:auto;width:28px;height:28px;border-radius:50%;border:1px solid rgba(99,160,255,.2);background:transparent;cursor:pointer;font-size:14px;color:#6080A8;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.ai-cls:hover{border-color:#EF4444;color:#EF4444;background:rgba(239,68,68,.1)}
+
+.ai-msgs{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(99,160,255,.15) transparent}
+.ai-msgs::-webkit-scrollbar{width:4px}
+.ai-msgs::-webkit-scrollbar-thumb{background:rgba(99,160,255,.15);border-radius:2px}
+
+.msg{display:flex;gap:10px;align-items:flex-start;animation:mi .3s ease}
+@keyframes mi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.u{flex-direction:row-reverse}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.avb{background:linear-gradient(135deg,#1A56DB,#7C3AED);box-shadow:0 0 10px rgba(99,102,241,.4)}
+.avu{background:rgba(99,160,255,.12);border:1px solid rgba(99,160,255,.2);font-size:12px}
+.bub{max-width:340px;padding:10px 14px;border-radius:12px;font-size:12.5px;line-height:1.7;word-break:break-word}
+.msg:not(.u) .bub{background:var(--ai-bot-bg);color:var(--ai-text);border:1px solid rgba(99,160,255,.12);border-top-left-radius:4px}
+.msg.u .bub{background:var(--ai-user-bg);color:#d0e4ff;border:1px solid rgba(99,160,255,.18);border-top-right-radius:4px}
+.bub code{font-family:var(--mono);font-size:11px;background:rgba(99,160,255,.18);padding:1px 5px;border-radius:3px;color:#7FC8FF}
+.bub strong{color:#B0D0FF;font-weight:700}
+
+.ai-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 18px 10px;border-top:1px solid var(--ai-border)}
+.chip{padding:5px 12px;border-radius:20px;border:1px solid rgba(99,160,255,.18);background:rgba(99,160,255,.05);color:#6080A8;font-size:11px;cursor:pointer;transition:all .15s;font-weight:500}
+.chip:hover{background:rgba(99,160,255,.14);color:#B0D0FF;border-color:rgba(99,160,255,.38)}
+
+.ai-inp-row{padding:12px 16px;border-top:1px solid var(--ai-border);display:flex;gap:8px;align-items:flex-end;background:rgba(0,0,0,.18)}
+.ai-inp{flex:1;background:rgba(0,0,0,.35);border:1px solid rgba(99,160,255,.18);border-radius:10px;padding:10px 14px;color:#E0EDFF;font-size:13px;font-family:'Noto Sans SC',sans-serif;outline:none;resize:none;min-height:40px;max-height:90px;line-height:1.5;transition:border-color .15s}
+.ai-inp:focus{border-color:rgba(99,160,255,.45);box-shadow:0 0 0 3px var(--ai-glow)}
+.ai-inp::placeholder{color:#3a5070}
+.ai-snd{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#1A56DB,#7C3AED);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s;flex-shrink:0}
+.ai-snd:hover{opacity:.85;transform:scale(1.06)}
+.ai-snd:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.tdots{display:flex;gap:4px;padding:5px 0;align-items:center}
+.td{width:6px;height:6px;border-radius:50%;background:#5070A0;animation:td 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-4px);opacity:1}}
+
+/* fill form btn inside AI */
+.fill-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;background:linear-gradient(90deg,rgba(26,86,219,.25),rgba(124,58,237,.25));border:1px solid rgba(99,160,255,.3);color:#90BEFF;font-size:11px;font-weight:700;cursor:pointer;margin-top:8px;transition:all .15s}
+.fill-btn:hover{background:linear-gradient(90deg,rgba(26,86,219,.4),rgba(124,58,237,.4));color:#C0D8FF}
+
+/* === BATCH MODAL === */
+.bm{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:660px;max-width:96vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:su .25s ease}
+.uz{border:2px dashed var(--border2);border-radius:12px;padding:36px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px}
+.uz:hover,.uz.drag{border-color:var(--blue);background:var(--blue-l)}
+.uz-ico{font-size:36px;margin-bottom:10px}
+.uz-t{font-size:15px;font-weight:700;margin-bottom:6px}
+.uz-s{font-size:12px;color:var(--text3)}
+.tip-box{background:var(--blue-l);border:1px solid rgba(26,86,219,.18);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2);line-height:1.75}
+.tip-box strong{color:var(--blue)}
+.bp-tw{border:1px solid var(--border);border-radius:8px;overflow:auto;max-height:200px}
+.bp-t{width:100%;border-collapse:collapse;font-size:12px}
+.bp-t th{background:var(--surface2);padding:7px 10px;text-align:left;font-weight:700;color:var(--text3);border-bottom:1px solid var(--border);white-space:nowrap}
+.bp-t td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text2)}
+.bp-t tr:last-child td{border-bottom:none}
+.bp-t .mc2{font-family:var(--mono);font-size:11px;color:var(--blue)}
+.pbar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-top:12px;display:none}
+.pfill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:3px;width:0;transition:width .35s ease}
+.ires{display:none;background:var(--green-l);border:1px solid rgba(13,159,110,.25);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:13px;color:var(--green);font-weight:600}
+
+/* toast */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 18px;box-shadow:0 8px 30px rgba(0,0,0,.15);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-i{font-size:18px}
+
+@keyframes rowFlash{0%,100%{background:transparent}30%,70%{background:var(--green-l)}}
+.row-flash td{animation:rowFlash 1.6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.page>*{animation:fadeIn .3s ease both}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><div class="brand-dot"></div>轻量ERP</div>
+  <div class="sep">/</div>
+  <div class="bc">物料管理 <span>›</span> 物料申请</div>
+  <div class="tr">
+    <div class="tt" onclick="toggleTheme()">
+      <div class="tto active" id="tt-l">☀️ 日间</div>
+      <div class="tto" id="tt-d">🌙 暗色</div>
+    </div>
+    <button class="btn btn-g" onclick="openBatch()">📥 批量导入</button>
+    <button class="btn btn-b" onclick="openApply()">＋ 新增物料申请</button>
+  </div>
+</div>
+
+<div class="page">
+  <!-- header -->
+  <div class="ph">
+    <div>
+      <h1>物料申请</h1>
+      <p>提交申请后系统自动赋码，无需人工编码 · 14位编码：公司(6) + 业务类型(2) + 物料分类(2) + 流水号(5)</p>
+    </div>
+    <div class="ph-right">
+      <div class="ai-fab-wrap">
+        <button class="ai-fab" onclick="openAI()">✨</button>
+        <span>AI 录入</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- stats -->
+  <div class="stats">
+    <div class="sc sc-b"><label>物料总数</label><div class="v vb">3,842</div><small>全部有效物料</small></div>
+    <div class="sc sc-g"><label>本月新增</label><div class="v vg">47</div><small>已审批通过</small></div>
+    <div class="sc sc-y"><label>待审批</label><div class="v vy">12</div><small>待物料管理员审核</small></div>
+    <div class="sc sc-p"><label>控制板类</label><div class="v vp">126</div><small>021009xx14xxxxx</small></div>
+  </div>
+
+  <!-- table -->
+  <div class="tw">
+    <div class="toolbar">
+      <input class="fi" placeholder="🔍 搜索物料名称 / 编码 / 型号" oninput="searchTable(this.value)">
+      <select class="fs" onchange="filterTable(this.value,'biz')">
+        <option value="">全部业务类型</option>
+        <option value="06">群冲物料 (06)</option>
+        <option value="07">交流物料 (07)</option>
+        <option value="08">储能物料 (08)</option>
+        <option value="09">单桩物料 (09)</option>
+      </select>
+      <select class="fs" onchange="filterTable(this.value,'cat')">
+        <option value="">全部物料分类</option>
+        <option value="14">控制板 (14)</option>
+        <option value="01">低压开关 (01)</option>
+        <option value="02">铜排 (02)</option>
+        <option value="13">线束 (13)</option>
+      </select>
+      <select class="fs">
+        <option>全部状态</option><option>已启用</option><option>待审批</option>
+      </select>
+      <div class="tbr">
+        <span style="font-size:11px;color:var(--text3)">共 <b id="rc" style="color:var(--text)">3</b> 条</span>
+        <button class="btn btn-g" style="font-size:11px;padding:5px 11px">导出</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>物料编码（14位）</th>
+          <th>业务 / 分类</th>
+          <th>物料名称</th>
+          <th>型号 / 规格</th>
+          <th>单位</th>
+          <th>状态</th>
+          <th style="width:80px">操作</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr data-biz="06" data-cat="14" data-search="021009061400001 主控板 pdu控制板 scmd-pdu2-out-8-100a">
+          <td><div class="cc"><span class="seg-co">021009</span><span class="seg-bz">06</span><span class="seg-ct">14</span><span class="seg-sq">00001</span></div></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px"><span class="tbadge tb-c">群冲物料</span><span style="font-size:10px;color:var(--text3);margin-top:1px">控制板 · 14</span></div></td>
+          <td><div><div class="mn">主控板</div><div class="ms">PDU控制板</div></div></td>
+          <td><span style="font-family:var(--mono);font-size:12px;color:var(--text2)">SCMD-PDU2-OUT-8-100A</span></td>
+          <td><span style="font-size:12px;color:var(--text2)">PCS</span></td>
+          <td><span class="sb sb-ok">● 已启用</span></td>
+          <td><button class="ab">查看</button></td>
+        </tr>
+        <tr data-biz="06" data-cat="14" data-search="021009061400002 模块零功耗控制板 umev-rlyo1 优优绿能">
+          <td><div class="cc"><span class="seg-co">021009</span><span class="seg-bz">06</span><span class="seg-ct">14</span><span class="seg-sq">00002</span></div></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px"><span class="tbadge tb-c">群冲物料</span><span style="font-size:10px;color:var(--text3);margin-top:1px">控制板 · 14</span></div></td>
+          <td><div><div class="mn">模块零功耗控制板</div><div class="ms">优优绿能</div></div></td>
+          <td><span style="font-family:var(--mono);font-size:12px;color:var(--text2)">UMEV-RLYO1</span></td>
+          <td><span style="font-size:12px;color:var(--text2)">PCS</span></td>
+          <td><span class="sb sb-ok">● 已启用</span></td>
+          <td><button class="ab">查看</button></td>
+        </tr>
+        <tr data-biz="06" data-cat="14" data-search="021009061400003 主控板 充电控制板 scmd-gc3">
+          <td><div class="cc"><span class="seg-co">021009</span><span class="seg-bz">06</span><span class="seg-ct">14</span><span class="seg-sq">00003</span></div></td>
+          <td><div style="display:flex;flex-direction:column;gap:4px"><span class="tbadge tb-c">群冲物料</span><span style="font-size:10px;color:var(--text3);margin-top:1px">控制板 · 14</span></div></td>
+          <td><div><div class="mn">主控板</div><div class="ms">充电控制板</div></div></td>
+          <td><span style="font-family:var(--mono);font-size:12px;color:var(--text2)">SCMD-GC3</span></td>
+          <td><span style="font-size:12px;color:var(--text2)">PCS</span></td>
+          <td><span class="sb sb-ok">● 已启用</span></td>
+          <td><button class="ab">查看</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== APPLY MODAL ===== -->
+<div class="backdrop" id="ap-bd" onclick="closeBD(event,'ap-bd')">
+  <div class="am">
+    <div class="mh"><div class="mt">📋 新增物料申请</div><button class="mc" onclick="close2('ap-bd')">✕</button></div>
+    <div class="mb">
+      <!-- code preview -->
+      <div class="cpv">
+        <div class="cpv-l">
+          <div class="lbl">系统自动赋码预览</div>
+          <div class="cpv-code">
+            <span class="cs cs-co">021009</span>
+            <span class="cdot">·</span>
+            <span class="cs cs-bz" id="pv-bz">--</span>
+            <span class="cdot">·</span>
+            <span class="cs cs-ct" id="pv-ct">--</span>
+            <span class="cdot">·</span>
+            <span class="cs cs-sq" id="pv-sq">?????</span>
+          </div>
+          <div class="cpv-legend">
+            <span class="cleg" style="background:rgba(148,163,184,.1);color:var(--text2)">公司 021009</span>
+            <span class="cleg" style="background:var(--purple-l);color:var(--purple)" id="leg-bz">业务类型</span>
+            <span class="cleg" style="background:var(--teal-l);color:var(--teal)" id="leg-ct">物料分类</span>
+            <span class="cleg" style="background:var(--green-l);color:var(--green)">流水号 自动分配</span>
+          </div>
+        </div>
+        <div class="cpv-hint" id="cpv-hint">请选择业务类型和物料分类，系统将自动生成编码，流水号无需填写。</div>
+      </div>
+      <!-- form -->
+      <div class="fg">
+        <div>
+          <label class="fl">业务类型 <span class="req">*</span></label>
+          <select class="fsel" id="f-bz" onchange="updCode()">
+            <option value="">请选择</option>
+            <option value="09">单桩物料 (09)</option>
+            <option value="08">储能物料 (08)</option>
+            <option value="07">交流物料 (07)</option>
+            <option value="06">群冲物料 (06)</option>
+          </select>
+        </div>
+        <div>
+          <label class="fl">物料分类 <span class="req">*</span></label>
+          <select class="fsel" id="f-ct" onchange="updCode()">
+            <option value="">请选择</option>
+            <option value="01">低压开关 (01)</option><option value="02">铜排 (02)</option>
+            <option value="03">直流充电枪 (03)</option><option value="04">充电模块 (04)</option>
+            <option value="05">液冷机 (05)</option><option value="06">辅助耗材 (06)</option>
+            <option value="07">包材 (07)</option><option value="08">钣金外壳 (08)</option>
+            <option value="09">电表 (09)</option><option value="10">风机 (10)</option>
+            <option value="11">显示屏 (11)</option><option value="12">辅源 (12)</option>
+            <option value="13">线束 (13)</option><option value="14">控制板 (14)</option>
+          </select>
+        </div>
+        <div class="ff">
+          <label class="fl">物料名称 <span class="req">*</span></label>
+          <input class="finp" id="f-nm" placeholder="例：主控板、IGBT模块">
+        </div>
+        <div class="ff">
+          <label class="fl">型号 / 规格 <span class="req">*</span></label>
+          <input class="finp" id="f-md" placeholder="例：SCMD-PDU2-OUT-8-100A；多个型号用分号分隔">
+        </div>
+        <div>
+          <label class="fl">计量单位 <span class="req">*</span></label>
+          <select class="fsel" id="f-un">
+            <option>PCS</option><option>套</option><option>根</option><option>m</option><option>kg</option><option>卷</option><option>块</option><option>张</option>
+          </select>
+        </div>
+        <div>
+          <label class="fl">品牌 / 厂商</label>
+          <input class="finp" id="f-br" placeholder="例：英飞凌、ABB、明纬">
+        </div>
+        <div class="ff">
+          <label class="fl">申请原因 / 备注</label>
+          <textarea class="ftxt" id="f-rm" placeholder="说明新增原因，或备注特殊要求……"></textarea>
+          <span class="fhint">提交后流转至物料管理员审批；审批通过后系统自动赋码并激活。</span>
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-g" onclick="close2('ap-bd')">取消</button>
+      <button class="btn btn-b" onclick="submitApply()">提交申请 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AI MODAL ===== -->
+<div class="backdrop" id="ai-bd" onclick="closeBD(event,'ai-bd')">
+  <div class="ai-wrap">
+    <div class="aih">
+      <div class="ailo">✨</div>
+      <div class="ai-name-w">
+        <div class="an">ERP 物料助手</div>
+        <div class="as"><div class="ai-dot"></div>在线 · 物料智能录入</div>
+      </div>
+      <button class="ai-cls" onclick="close2('ai-bd')">✕</button>
+    </div>
+    <div class="ai-msgs" id="ai-msgs">
+      <div class="msg">
+        <div class="av avb">✨</div>
+        <div class="bub">你好！我是 ERP 物料助手 👋<br><br>请描述要新增的物料，我来帮你匹配编码规则并自动填写申请表单。<br><br>例如：<strong>「群冲产线的 IGBT 模块，型号 FF300R12KE4，英飞凌产」</strong></div>
+      </div>
+    </div>
+    <div class="ai-chips" id="ai-chips">
+      <div class="chip" onclick="sendChip(this)">群冲控制板</div>
+      <div class="chip" onclick="sendChip(this)">储能铜排</div>
+      <div class="chip" onclick="sendChip(this)">单桩充电枪</div>
+      <div class="chip" onclick="sendChip(this)">交流线束</div>
+    </div>
+    <div class="ai-inp-row">
+      <textarea class="ai-inp" id="ai-inp" placeholder="描述物料信息…" rows="1" onkeydown="aiKey(event)"></textarea>
+      <button class="ai-snd" id="ai-snd" onclick="sendAI()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BATCH MODAL ===== -->
+<div class="backdrop" id="bt-bd" onclick="closeBD(event,'bt-bd')">
+  <div class="bm">
+    <div class="mh"><div class="mt">📥 批量导入物料</div><button class="mc" onclick="close2('bt-bd')">✕</button></div>
+    <div class="mb">
+      <div class="tip-box">
+        📋 <strong>导入说明：</strong>上传 Excel / CSV，系统按物料分类自动赋码。<br>
+        必填列：<strong>业务类型、物料分类、物料名称、型号、计量单位</strong>；编码列留空，系统生成。<br>
+        <span style="color:var(--text3)">· 每次最多 500 条 &nbsp;·&nbsp; 重复型号将提示冲突</span>
+      </div>
+      <div class="uz" id="uz" ondragover="dov(event)" ondragleave="dlv()" ondrop="ddr(event)" onclick="document.getElementById('fli').click()">
+        <div class="uz-ico">📂</div>
+        <div class="uz-t">拖拽文件至此或点击上传</div>
+        <div class="uz-s">.xlsx · .xls · .csv · 最大 10MB</div>
+        <input type="file" id="fli" style="display:none" accept=".xlsx,.xls,.csv" onchange="fsel()">
+      </div>
+      <div id="bprev" style="display:none">
+        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px">预览（前3条）</div>
+        <div class="bp-tw">
+          <table class="bp-t">
+            <thead><tr><th>业务类型</th><th>物料分类</th><th>物料名称</th><th>型号</th><th>单位</th><th>自动赋码</th></tr></thead>
+            <tbody id="bp-tbody"></tbody>
+          </table>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="btn btn-b" onclick="startImport()">✅ 确认导入 <span id="icnt"></span></button>
+          <button class="btn btn-g" onclick="clearUp()">重新上传</button>
+        </div>
+        <div class="pbar" id="pbar"><div class="pfill" id="pfill"></div></div>
+        <div class="ires" id="ires"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-i" id="ti">✅</span><span id="tm">操作成功</span></div>
+
+<script>
+const BIZ={'09':'单桩物料','08':'储能物料','07':'交流物料','06':'群冲物料'};
+const CAT={'01':'低压开关','02':'铜排','03':'直流充电枪','04':'充电模块','05':'液冷机','06':'辅助耗材','07':'包材','08':'钣金外壳','09':'电表','10':'风机','11':'显示屏','12':'辅源','13':'线束','14':'控制板'};
+const SEQ={'06_14':4,'06_02':12,'06_13':8,'09_03':3,'07_13':5,'08_02':2};
+
+// THEME
+function toggleTheme(){
+  const h=document.documentElement,d=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',d?'light':'dark');
+  document.getElementById('tt-l').classList.toggle('active',d);
+  document.getElementById('tt-d').classList.toggle('active',!d);
+}
+
+// MODALS
+function openApply(){document.getElementById('ap-bd').classList.add('open')}
+function openAI(){document.getElementById('ai-bd').classList.add('open')}
+function openBatch(){document.getElementById('bt-bd').classList.add('open')}
+function close2(id){document.getElementById(id).classList.remove('open')}
+function closeBD(e,id){if(e.target.id===id)close2(id)}
+
+// CODE PREVIEW
+function updCode(){
+  const bz=document.getElementById('f-bz').value, ct=document.getElementById('f-ct').value;
+  document.getElementById('pv-bz').textContent=bz||'--';
+  document.getElementById('pv-ct').textContent=ct||'--';
+  document.getElementById('leg-bz').textContent=bz?`${BIZ[bz]} · ${bz}`:'业务类型';
+  document.getElementById('leg-ct').textContent=ct?`${CAT[ct]} · ${ct}`:'物料分类';
+  if(bz&&ct){
+    const seq=String(SEQ[`${bz}_${ct}`]||1).padStart(5,'0');
+    document.getElementById('pv-sq').textContent=seq;
+    document.getElementById('cpv-hint').innerHTML=`<b style="color:var(--blue)">021009${bz}${ct}${seq}</b><br>${BIZ[bz]} · ${CAT[ct]}<br><span style="color:var(--green)">流水号 ${seq} 自动分配，保存后正式生效。</span>`;
+  }else{
+    document.getElementById('pv-sq').textContent='?????';
+    document.getElementById('cpv-hint').textContent='请选择业务类型和物料分类，系统将自动生成编码，流水号无需填写。';
+  }
+}
+
+let ns=4;
+function submitApply(){
+  const bz=document.getElementById('f-bz').value,ct=document.getElementById('f-ct').value;
+  const nm=document.getElementById('f-nm').value.trim(),md=document.getElementById('f-md').value.trim();
+  const un=document.getElementById('f-un').value,br=document.getElementById('f-br').value.trim();
+  if(!bz||!ct||!nm||!md){showToast('⚠️','请填写必填项');return}
+  const seq=String(ns++).padStart(5,'0'),code=`021009${bz}${ct}${seq}`;
+  close2('ap-bd');
+  addRow(code,bz,ct,nm,md,un,br);
+  showToast('✅',`申请已提交 · 编码 ${code} 待审批`);
+  ['f-bz','f-ct','f-nm','f-md','f-br','f-rm'].forEach(id=>{const el=document.getElementById(id);el.tagName==='SELECT'?el.selectedIndex=0:el.value=''});
+  document.getElementById('f-un').selectedIndex=0;
+  updCode();
+}
+
+function addRow(code,bz,ct,nm,md,un,br){
+  const tb=document.getElementById('tbody'),tr=document.createElement('tr');
+  tr.setAttribute('data-biz',bz);tr.setAttribute('data-cat',ct);
+  tr.setAttribute('data-search',(code+' '+nm+' '+md+' '+br).toLowerCase());
+  tr.className='row-flash';
+  tr.innerHTML=`<td><div class="cc"><span class="seg-co">${code.slice(0,6)}</span><span class="seg-bz">${code.slice(6,8)}</span><span class="seg-ct">${code.slice(8,10)}</span><span class="seg-sq">${code.slice(10)}</span></div></td><td><div style="display:flex;flex-direction:column;gap:4px"><span class="tbadge tb-c">${BIZ[bz]||bz}</span><span style="font-size:10px;color:var(--text3);margin-top:1px">${CAT[ct]||ct} · ${ct}</span></div></td><td><div><div class="mn">${nm}</div><div class="ms">${br||''}</div></div></td><td><span style="font-family:var(--mono);font-size:12px;color:var(--text2)">${md}</span></td><td><span style="font-size:12px;color:var(--text2)">${un}</span></td><td><span class="sb sb-pd">◷ 待审批</span></td><td><button class="ab">查看</button></td>`;
+  tb.insertBefore(tr,tb.firstChild);
+  document.getElementById('rc').textContent=tb.rows.length;
+}
+
+// SEARCH & FILTER
+function searchTable(q){
+  const rows=document.querySelectorAll('#tbody tr');
+  rows.forEach(r=>{r.style.display=(!q||r.getAttribute('data-search').includes(q.toLowerCase()))?'':'none'});
+  updCount();
+}
+function filterTable(val,field){
+  const rows=document.querySelectorAll('#tbody tr');
+  rows.forEach(r=>{if(!val)r.style.removeProperty('display');else r.style.display=r.getAttribute(`data-${field}`)===val?'':'none'});
+  updCount();
+}
+function updCount(){document.getElementById('rc').textContent=[...document.querySelectorAll('#tbody tr')].filter(r=>r.style.display!=='none').length}
+
+// AI CHAT
+let aiTyping=false;
+const CHIPS_RESP={
+  '群冲控制板':{bz:'06',ct:'14',name:'控制板',model:'待填写'},
+  '储能铜排':{bz:'08',ct:'02',name:'铜排',model:'待填写'},
+  '单桩充电枪':{bz:'09',ct:'03',name:'直流充电枪',model:'待填写'},
+  '交流线束':{bz:'07',ct:'13',name:'线束',model:'待填写'},
+};
+function sendChip(el){
+  const t=el.textContent;
+  document.getElementById('ai-chips').style.display='none';
+  appendUser(t);
+  const cr=CHIPS_RESP[t];
+  if(cr){
+    const code=`021009${cr.bz}${cr.ct}${String(SEQ[`${cr.bz}_${cr.ct}`]||1).padStart(5,'0')}`;
+    simulateBot(`已匹配编码规则 👇\n\n• **业务类型**：${BIZ[cr.bz]} <code>${cr.bz}</code>\n• **物料分类**：${CAT[cr.ct]} <code>${cr.ct}</code>\n• **预计编码**：<code>${code}</code>\n\n请告诉我具体的物料名称和型号，我帮你填入申请表单。`,null);
+  }else{
+    simulateBot(`好的，我来帮你处理「${t}」的物料申请。请补充：物料名称和型号是什么？`,null);
+  }
+}
+function sendAI(){
+  const inp=document.getElementById('ai-inp'),text=inp.value.trim();
+  if(!text)return;
+  inp.value='';
+  document.getElementById('ai-chips').style.display='none';
+  appendUser(text);
+  const low=text.toLowerCase();
+  let reply,fillData=null;
+  if(low.includes('igbt')||low.includes('ff300')){
+    fillData={bz:'06',ct:'14',nm:'IGBT模块',md:'FF300R12KE4',br:'英飞凌'};
+    const seq=String(SEQ['06_14']||1).padStart(5,'0');
+    reply=`✅ 已识别到物料信息：\n\n• **业务类型**：群冲物料 <code>06</code>\n• **物料分类**：控制板 <code>14</code>\n• **物料名称**：IGBT 模块\n• **型号**：FF300R12KE4\n• **品牌**：英飞凌（Infineon）\n• **预计编码**：<code>021009061400${String(ns).padStart(3,'0')}</code>\n\n信息是否正确？可点击下方按钮直接填入申请表单。`;
+  } else if(low.includes('铜排')||low.includes('copper')){
+    fillData={bz:'06',ct:'02',nm:'铜排',md:'TMY-60×6',br:''};
+    reply=`✅ 已识别到铜排类物料：\n\n• **业务类型**：群冲物料 <code>06</code>\n• **物料分类**：铜排 <code>02</code>\n• **预计编码**：<code>0210090602xxxxx</code>\n\n请补充具体规格（如线径/截面积/材质），我帮你完善表单。`;
+  } else if(low.includes('线束')||low.includes('harness')){
+    fillData={bz:'06',ct:'13',nm:'线束',md:'',br:''};
+    reply=`已识别：线束类物料 <code>13</code>\n\n请告诉我这是哪条产线（群冲/储能/单桩/交流）？型号是什么？`;
+  } else {
+    reply=`收到！请告诉我：\n1️⃣ 这是哪条产线的物料？（群冲/储能/单桩/交流）\n2️⃣ 物料属于哪个分类？（如控制板、铜排、线束…）\n3️⃣ 型号是什么？`;
+  }
+  simulateBot(reply,fillData);
+}
+function aiKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI()}}
+
+function appendUser(text){
+  const el=document.getElementById('ai-msgs');
+  const d=document.createElement('div');
+  d.className='msg u';
+  d.innerHTML=`<div class="av avu">👤</div><div class="bub">${text}</div>`;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function simulateBot(reply,fillData){
+  if(aiTyping)return;
+  aiTyping=true;
+  document.getElementById('ai-snd').disabled=true;
+  const el=document.getElementById('ai-msgs');
+  const td=document.createElement('div');
+  td.className='msg';
+  td.innerHTML=`<div class="av avb">✨</div><div class="bub"><div class="tdots"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  el.appendChild(td);el.scrollTop=el.scrollHeight;
+  setTimeout(()=>{
+    td.remove();
+    const rd=document.createElement('div');
+    rd.className='msg';
+    const fmt=reply.replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
+    const fillBtn=fillData?`<br><div class="fill-btn" onclick="fillForm(${JSON.stringify(fillData)})">📝 填入申请表单</div>`:'';
+    rd.innerHTML=`<div class="av avb">✨</div><div class="bub">${fmt}${fillBtn}</div>`;
+    el.appendChild(rd);el.scrollTop=el.scrollHeight;
+    aiTyping=false;document.getElementById('ai-snd').disabled=false;
+  },1400);
+}
+function fillForm(d){
+  close2('ai-bd');
+  openApply();
+  setTimeout(()=>{
+    if(d.bz)document.getElementById('f-bz').value=d.bz;
+    if(d.ct)document.getElementById('f-ct').value=d.ct;
+    if(d.nm)document.getElementById('f-nm').value=d.nm;
+    if(d.md)document.getElementById('f-md').value=d.md;
+    if(d.br)document.getElementById('f-br').value=d.br;
+    updCode();
+    showToast('✨','AI 已自动填写表单，请核对后提交');
+  },300);
+}
+
+// BATCH
+const MOCK=[
+  {bz:'06',ct:'14',bzN:'群冲物料',ctN:'控制板',nm:'主控板 V2',md:'SCMD-PDU3-OUT-16-200A',un:'PCS'},
+  {bz:'06',ct:'13',bzN:'群冲物料',ctN:'线束',nm:'电源线束组件',md:'WH-PDU-A48V-3M',un:'套'},
+  {bz:'08',ct:'02',bzN:'储能物料',ctN:'铜排',nm:'储能铜排组',md:'TMY-80x8',un:'m'},
+];
+function dov(e){e.preventDefault();document.getElementById('uz').classList.add('drag')}
+function dlv(){document.getElementById('uz').classList.remove('drag')}
+function ddr(e){e.preventDefault();dlv();parseMock()}
+function fsel(){parseMock()}
+function parseMock(){
+  document.getElementById('uz').style.display='none';
+  document.getElementById('bprev').style.display='block';
+  document.getElementById('icnt').textContent=`(共 ${MOCK.length} 条)`;
+  const tb=document.getElementById('bp-tbody');tb.innerHTML='';
+  MOCK.forEach((r,i)=>{
+    const seq=String(20+i).padStart(5,'0'),code=`021009${r.bz}${r.ct}${seq}`;
+    tb.innerHTML+=`<tr><td>${r.bzN}</td><td>${r.ctN}</td><td>${r.nm}</td><td class="mc2">${r.md}</td><td>${r.un}</td><td class="mc2">${code}</td></tr>`;
+  });
+}
+function startImport(){
+  const bar=document.getElementById('pbar'),fill=document.getElementById('pfill'),res=document.getElementById('ires');
+  bar.style.display='block';let w=0;
+  const iv=setInterval(()=>{
+    w+=Math.random()*18+8;
+    if(w>=100){w=100;clearInterval(iv);
+      setTimeout(()=>{bar.style.display='none';res.style.display='block';res.textContent=`✅ 导入成功！共 ${MOCK.length} 条物料，编码已自动生成，进入待审批队列。`;setTimeout(()=>close2('bt-bd'),2500)},300)}
+    fill.style.width=w+'%';
+  },120);
+}
+function clearUp(){document.getElementById('uz').style.display='block';document.getElementById('bprev').style.display='none';document.getElementById('ires').style.display='none'}
+
+// TOAST
+function showToast(icon,msg){
+  const t=document.getElementById('toast');
+  document.getElementById('ti').textContent=icon;document.getElementById('tm').textContent=msg;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);
+}
+</script>
+</body>
+</html>
