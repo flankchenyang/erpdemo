@@ -42,6 +42,15 @@
     padding: 20px 0;
     overflow-y: auto;
   }
+  
+  /* MAIN CONTENT */
+  .main-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
   .sidebar-brand {
     padding: 0 20px 20px;
     border-bottom: 1px solid var(--border);
@@ -95,7 +104,7 @@
   }
 
   /* TOP NAV */
-  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; margin-left: 240px; width: calc(100% - 240px); }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
   .topbar-brand { font-weight: 700; font-size: 16px; color: var(--blue); letter-spacing: -0.3px; }
   .topbar-sep { color: var(--border); font-size: 18px; }
   .breadcrumb { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--text-secondary); }
@@ -108,7 +117,7 @@
   .btn-ghost:hover { background: var(--surface2); }
 
   /* LAYOUT */
-  .page { max-width: 1280px; margin: 0 0 0 240px; padding: 28px 32px; flex: 1; }
+  .page { max-width: 1280px; margin: 0 auto; padding: 28px 32px; flex: 1; }
   .header-row { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 28px; }
   .material-img { width: 96px; height: 96px; border-radius: 14px; background: var(--blue-light); border: 1px solid #C7D9F8; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
   .material-img svg { opacity: 0.5; }
@@ -286,17 +295,18 @@
     </nav>
   </aside>
 
-<div class="topbar">
-  <div class="topbar-brand">⚡ 轻量ERP</div>
-  <div class="topbar-sep">/</div>
-  <div class="breadcrumb">物料管理 <span>›</span> 物料主数据 <span>›</span> 物料详情</div>
-  <div class="topbar-actions">
-    <button class="btn btn-ghost">编辑物料</button>
-    <button class="btn btn-primary">申请采购</button>
-  </div>
-</div>
+  <div class="main-content">
+    <div class="topbar">
+      <div class="topbar-brand">⚡ 轻量ERP</div>
+      <div class="topbar-sep">/</div>
+      <div class="breadcrumb">物料管理 <span>›</span> 物料主数据 <span>›</span> 物料详情</div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost">编辑物料</button>
+        <button class="btn btn-primary">申请采购</button>
+      </div>
+    </div>
 
-<div class="page">
+    <div class="page">
 
   <!-- HEADER -->
   <div class="header-row">
@@ -569,5 +579,7 @@
   </div>
 
 </div>
+  </div>
+
 </body>
 </html>

@@ -14,6 +14,9 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text
 
 /* sidebar */
 .sidebar{width:240px;background:var(--topbar);border-right:1px solid var(--border);height:100vh;position:fixed;top:0;left:0;z-index:201;padding:20px 0;overflow-y:auto;transition:background .25s,border-color .25s}
+
+/* main content */
+.main-content{margin-left:240px;width:calc(100% - 240px);min-height:100vh;display:flex;flex-direction:column}
 .sidebar-brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:20px}
 .sidebar-brand h1{font-family:var(--sora);font-weight:800;font-size:16px;color:var(--blue);letter-spacing:-0.3px}
 .nav-menu{padding:0 12px}
@@ -25,7 +28,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text
 .nav-section{font-size:11px;font-weight:600;color:var(--text3);padding:0 16px 8px;margin-top:24px;margin-bottom:8px;letter-spacing:0.5px}
 
 /* topbar */
-.topbar{background:var(--topbar);border-bottom:1px solid var(--border);padding:0 28px;height:54px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow);transition:background .25s;margin-left:240px;width:calc(100% - 240px)}
+.topbar{background:var(--topbar);border-bottom:1px solid var(--border);padding:0 28px;height:54px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:200;box-shadow:var(--shadow);transition:background .25s}
 .brand{font-family:var(--sora);font-weight:800;font-size:15px;color:var(--blue);display:flex;align-items:center;gap:7px}
 .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
 [data-theme="dark"] .brand-dot{box-shadow:0 0 8px var(--blue)}
@@ -44,7 +47,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text
 .btn-b:hover{opacity:.88}
 
 /* page */
-.page{padding:22px 28px;max-width:1400px;margin:0 0 0 240px;flex:1}
+.page{padding:22px 28px;max-width:1400px;margin:0 auto;flex:1}
 .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
 .ph h1{font-family:var(--sora);font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:5px}
 .ph p{font-size:13px;color:var(--text2)}
@@ -285,21 +288,22 @@ tr:hover td{background:var(--surface2);transition:background .1s}
     </nav>
   </aside>
 
-<div class="topbar">
-  <div class="brand"><div class="brand-dot"></div>轻量ERP</div>
-  <div class="sep">/</div>
-  <div class="bc">物料管理 <span>›</span> 物料申请</div>
-  <div class="tr">
-    <div class="tt" onclick="toggleTheme()">
-      <div class="tto active" id="tt-l">☀️ 日间</div>
-      <div class="tto" id="tt-d">🌙 暗色</div>
+  <div class="main-content">
+    <div class="topbar">
+      <div class="brand"><div class="brand-dot"></div>轻量ERP</div>
+      <div class="sep">/</div>
+      <div class="bc">物料管理 <span>›</span> 物料申请</div>
+      <div class="tr">
+        <div class="tt" onclick="toggleTheme()">
+          <div class="tto active" id="tt-l">☀️ 日间</div>
+          <div class="tto" id="tt-d">🌙 暗色</div>
+        </div>
+        <button class="btn btn-g" onclick="openBatch()">📥 批量导入</button>
+        <button class="btn btn-b" onclick="openApply()">＋ 新增物料申请</button>
+      </div>
     </div>
-    <button class="btn btn-g" onclick="openBatch()">📥 批量导入</button>
-    <button class="btn btn-b" onclick="openApply()">＋ 新增物料申请</button>
-  </div>
-</div>
 
-<div class="page">
+    <div class="page">
   <!-- header -->
   <div class="ph">
     <div>
@@ -745,5 +749,6 @@ function showToast(icon,msg){
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);
 }
 </script>
+  </div>
 </body>
 </html>

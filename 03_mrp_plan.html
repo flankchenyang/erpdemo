@@ -43,6 +43,15 @@
     padding: 20px 0;
     overflow-y: auto;
   }
+  
+  /* MAIN CONTENT */
+  .main-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
   .sidebar-brand {
     padding: 0 20px 20px;
     border-bottom: 1px solid var(--border);
@@ -95,7 +104,7 @@
     letter-spacing: 0.5px;
   }
 
-  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; margin-left: 240px; width: calc(100% - 240px); }
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
   .topbar-brand { font-weight: 700; font-size: 16px; color: var(--blue); }
   .topbar-sep { color: var(--border); }
   .breadcrumb { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
@@ -109,7 +118,7 @@
   .btn-orange { background: var(--orange); color: #fff; }
   .btn-orange:hover { background: #d63f3f; }
 
-  .page { max-width: 1280px; margin: 0 0 0 240px; padding: 28px 32px; flex: 1; }
+  .page { max-width: 1280px; margin: 0 auto; padding: 28px 32px; flex: 1; }
 
   /* FLOW STEPS */
   .flow-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 28px; margin-bottom: 24px; }
@@ -271,18 +280,18 @@
     </nav>
   </aside>
 
-<div class="topbar">
-  <div class="topbar-brand">⚡ 轻量ERP</div>
-  <div class="topbar-sep">/</div>
-  <div class="breadcrumb">生产计划 <span>›</span> MRP 运算 <span>›</span> 物料需求计划</div>
-  <div class="topbar-actions">
-    <span style="font-size:12px;color:var(--text-muted)">计划生成时间：2025-06-12 09:35</span>
-    <button class="btn btn-ghost">重新运算</button>
-    <button class="btn btn-orange">⚡ 一键转采购订单</button>
-  </div>
-</div>
+  <div class="main-content">
+    <div class="topbar">
+      <div class="topbar-brand">⚡ 轻量ERP</div>
+      <div class="topbar-sep">/</div>
+      <div class="breadcrumb">生产计划 <span>›</span> MRP 运算 <span>›</span> 物料需求计划</div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost">导出</button>
+        <button class="btn btn-primary">刷新</button>
+      </div>
+    </div>
 
-<div class="page">
+    <div class="page">
 
   <!-- FLOW STEPS -->
   <div class="flow-bar">
@@ -540,5 +549,7 @@
   </div>
 
 </div>
+  </div>
+
 </body>
 </html>
