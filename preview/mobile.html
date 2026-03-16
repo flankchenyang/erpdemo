@@ -160,37 +160,45 @@
     
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-      const paper = document.querySelector("#paper");
-      const updatedAt = document.querySelector("#updatedAt");
-      const refreshButton = document.querySelector("#refreshButton");
-      
-      async function renderDocument() {
-        try {
-          const response = await fetch("../20260315.md", { cache: "no-store" });
-          if (!response.ok) {
-            throw new Error(`文档读取失败: ${response.status}`);
+      // 确保marked库加载完成后再执行
+      window.addEventListener('load', function() {
+        const paper = document.querySelector("#paper");
+        const updatedAt = document.querySelector("#updatedAt");
+        const refreshButton = document.querySelector("#refreshButton");
+        
+        async function renderDocument() {
+          try {
+            const response = await fetch("../20260315.md", { cache: "no-store" });
+            if (!response.ok) {
+              throw new Error(`文档读取失败: ${response.status}`);
+            }
+            
+            const markdown = await response.text();
+            // 检查marked是否可用
+            if (typeof marked === 'function') {
+              const html = marked(markdown);
+              paper.innerHTML = html;
+              updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
+            } else {
+              throw new Error('marked库未正确加载');
+            }
+          } catch (error) {
+            paper.innerHTML = `<p class="error">${error.message}</p>`;
           }
-          
-          const markdown = await response.text();
-          const html = marked(markdown);
-          paper.innerHTML = html;
-          updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
-        } catch (error) {
-          paper.innerHTML = `<p class="error">${error.message}</p>`;
         }
-      }
-      
-      refreshButton.addEventListener("click", async () => {
-        refreshButton.disabled = true;
-        try {
-          await renderDocument();
-        } finally {
-          refreshButton.disabled = false;
-        }
+        
+        refreshButton.addEventListener("click", async () => {
+          refreshButton.disabled = true;
+          try {
+            await renderDocument();
+          } finally {
+            refreshButton.disabled = false;
+          }
+        });
+        
+        // 初始加载
+        renderDocument();
       });
-      
-      // 初始加载
-      renderDocument();
     </script>
   </body>
 </html>

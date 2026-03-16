@@ -30,63 +30,71 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-      const paper = document.querySelector("#paper");
-      const fileName = document.querySelector("#fileName");
-      const updatedAt = document.querySelector("#updatedAt");
-      const charCount = document.querySelector("#charCount");
-      const refreshButton = document.querySelector("#refreshButton");
-      const panelToggle = document.querySelector("#panelToggle");
-      const sidePanel = document.querySelector("#sidePanel");
-      
-      let isPanelVisible = true;
-      
-      function syncPanelState() {
-        sidePanel.hidden = !isPanelVisible;
-        document.body.classList.toggle("panel-hidden", !isPanelVisible);
-        panelToggle.textContent = isPanelVisible ? "隐藏信息卡" : "显示信息卡";
-        panelToggle.setAttribute("aria-expanded", String(isPanelVisible));
-      }
-      
-      async function renderDocument() {
-        try {
-          const response = await fetch("../20260315.md", { cache: "no-store" });
-          if (!response.ok) {
-            throw new Error(`文档读取失败: ${response.status}`);
+      // 确保marked库加载完成后再执行
+      window.addEventListener('load', function() {
+        const paper = document.querySelector("#paper");
+        const fileName = document.querySelector("#fileName");
+        const updatedAt = document.querySelector("#updatedAt");
+        const charCount = document.querySelector("#charCount");
+        const refreshButton = document.querySelector("#refreshButton");
+        const panelToggle = document.querySelector("#panelToggle");
+        const sidePanel = document.querySelector("#sidePanel");
+        
+        let isPanelVisible = true;
+        
+        function syncPanelState() {
+          sidePanel.hidden = !isPanelVisible;
+          document.body.classList.toggle("panel-hidden", !isPanelVisible);
+          panelToggle.textContent = isPanelVisible ? "隐藏信息卡" : "显示信息卡";
+          panelToggle.setAttribute("aria-expanded", String(isPanelVisible));
+        }
+        
+        async function renderDocument() {
+          try {
+            const response = await fetch("../20260315.md", { cache: "no-store" });
+            if (!response.ok) {
+              throw new Error(`文档读取失败: ${response.status}`);
+            }
+            
+            const markdown = await response.text();
+            // 检查marked是否可用
+            if (typeof marked === 'function') {
+              const html = marked(markdown);
+              paper.innerHTML = html;
+              updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
+              charCount.textContent = `当前论文字数：${markdown.length.toLocaleString('zh-CN')} 字`;
+            } else {
+              throw new Error('marked库未正确加载');
+            }
+          } catch (error) {
+            paper.innerHTML = `<p class="loading">${error.message}</p>`;
           }
-          
-          const markdown = await response.text();
-          const html = marked(markdown);
-          paper.innerHTML = html;
-          updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
-          charCount.textContent = `当前论文字数：${markdown.length.toLocaleString('zh-CN')} 字`;
-        } catch (error) {
-          paper.innerHTML = `<p class="loading">${error.message}</p>`;
         }
-      }
-      
-      refreshButton.addEventListener("click", async () => {
-        refreshButton.disabled = true;
-        try {
-          await renderDocument();
-        } finally {
-          refreshButton.disabled = false;
-        }
-      });
-      
-      panelToggle.addEventListener("click", () => {
-        isPanelVisible = !isPanelVisible;
+        
+        refreshButton.addEventListener("click", async () => {
+          refreshButton.disabled = true;
+          try {
+            await renderDocument();
+          } finally {
+            refreshButton.disabled = false;
+          }
+        });
+        
+        panelToggle.addEventListener("click", () => {
+          isPanelVisible = !isPanelVisible;
+          syncPanelState();
+        });
+        
         syncPanelState();
+        
+        // 初始加载
+        renderDocument();
+        
+        // 自动检查更新
+        setInterval(() => {
+          renderDocument().catch(() => {});
+        }, 5000);
       });
-      
-      syncPanelState();
-      
-      // 初始加载
-      renderDocument();
-      
-      // 自动检查更新
-      setInterval(() => {
-        renderDocument().catch(() => {});
-      }, 5000);
     </script>
   </body>
 </html>
