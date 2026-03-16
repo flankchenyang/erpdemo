@@ -1,0 +1,60 @@
+<svg width="1200" height="820" viewBox="0 0 1200 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="820" rx="32" fill="#F8FBFF"/>
+  <text x="600" y="60" text-anchor="middle" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="28" font-weight="700" fill="#16324F">新加坡制度范本与企业管理重建的交汇逻辑</text>
+  <text x="600" y="96" text-anchor="middle" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="15" fill="#58708A">制度层把外部条件组织出来，企业层再把这些条件转化为可持续的工厂能力</text>
+
+  <rect x="60" y="140" width="500" height="470" rx="24" fill="#EEF5FC" stroke="#B9D1E6" stroke-width="2"/>
+  <text x="100" y="190" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="26" font-weight="700" fill="#1C456B">行业层：制度组织外部条件</text>
+  <text x="100" y="220" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="15" fill="#4E6B86">解决“企业单独努力也难以解决”的供需双侧约束</text>
+
+  <rect x="95" y="255" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#C7DBEC"/>
+  <text x="120" y="292" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#173C5A">ICPH</text>
+  <text x="205" y="292" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#46647C">30年租期的多层制造设施，让工厂先成为独立基础设施</text>
+
+  <rect x="95" y="330" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#C7DBEC"/>
+  <text x="120" y="367" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#173C5A">GLS 强制要求</text>
+  <text x="270" y="367" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#46647C">把订单密度问题前移到土地出让与场景定义阶段</text>
+
+  <rect x="95" y="405" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#C7DBEC"/>
+  <text x="120" y="442" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#173C5A">BIP + IPA + 工厂认证</text>
+  <text x="340" y="442" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#46647C">把质量与合规责任从项目前移到系统和工厂能力</text>
+
+  <rect x="95" y="480" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#C7DBEC"/>
+  <text x="120" y="517" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#173C5A">早期介入原则</text>
+  <text x="270" y="517" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#46647C">把设计冻结、材料确认和关键接口在前端处理</text>
+
+  <rect x="95" y="555" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#C7DBEC"/>
+  <text x="120" y="592" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#173C5A">PGF / C&amp;P 结果导向采购</text>
+  <text x="370" y="592" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#46647C">不预设技术清单，而是用生产力结果倒逼前端协同</text>
+
+  <rect x="640" y="140" width="500" height="470" rx="24" fill="#FFF6EA" stroke="#E7C79C" stroke-width="2"/>
+  <text x="680" y="190" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="26" font-weight="700" fill="#74440F">企业层：重建内部管理逻辑</text>
+  <text x="680" y="220" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="15" fill="#8A6333">解决“即使条件改善，工厂仍会被项目制惯性拉回去”的内部问题</text>
+
+  <rect x="675" y="255" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#E3C89F"/>
+  <text x="700" y="292" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#704513">第一步：工厂独立主体</text>
+  <text x="920" y="292" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#8A6435">内部订单、冻结时间、变更责任、结算边界写清楚</text>
+
+  <rect x="675" y="330" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#E3C89F"/>
+  <text x="700" y="367" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#704513">第二步：独立核算</text>
+  <text x="860" y="367" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#8A6435">折旧、研发、换型损失和良品率回到工厂层面看</text>
+
+  <rect x="675" y="405" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#E3C89F"/>
+  <text x="700" y="442" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#704513">第三步：并行激励</text>
+  <text x="860" y="442" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#8A6435">项目团队保现金流，工厂团队保成熟度与复用率</text>
+
+  <rect x="675" y="480" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#E3C89F"/>
+  <text x="700" y="517" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#704513">第四步：数据跟着产品走</text>
+  <text x="940" y="517" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#8A6435">从模块编码、工序、质量和返工开始沉淀知识</text>
+
+  <rect x="675" y="555" width="430" height="60" rx="16" fill="#FFFFFF" stroke="#E3C89F"/>
+  <text x="700" y="592" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="18" font-weight="600" fill="#704513">核心动作</text>
+  <text x="800" y="592" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="16" fill="#8A6435">把“项目一次性执行”改成“跨项目积累可复用能力”</text>
+
+  <path d="M310 630 C310 680 455 700 600 700 C745 700 890 680 890 630" stroke="#A7BFD4" stroke-width="5" stroke-linecap="round"/>
+  <path d="M600 700 L600 730" stroke="#8D6232" stroke-width="6" stroke-linecap="round"/>
+  <path d="M585 715 L600 735 L615 715" stroke="#8D6232" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="285" y="740" width="630" height="56" rx="18" fill="#1F4B77"/>
+  <text x="600" y="774" text-anchor="middle" font-family="Inter, Noto Sans SC, Arial, sans-serif" font-size="22" font-weight="700" fill="#FFFFFF">共同目标：让数据跟着产品走，让每一次生产都为下一次积累知识</text>
+</svg>

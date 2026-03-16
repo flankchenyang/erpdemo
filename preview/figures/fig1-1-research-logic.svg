@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">图1-1 研究逻辑与论文结构图</title>
+  <desc id="desc">展示研究背景、研究问题、概念界定、五维约束模型、案例分析与破局路径之间的逻辑关系。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .card { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 20; ry: 20; }
+      .accent { fill: #0f66d8; }
+      .accent-soft { fill: #edf4ff; }
+      .warn-soft { fill: #fff3df; }
+      .good-soft { fill: #eef8f2; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 22px; font-weight: 700; }
+      .b { font-size: 18px; font-weight: 600; }
+      .s { font-size: 16px; }
+      .tiny { font-size: 14px; }
+      .line { stroke: #7ea8e6; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #f1a742; stroke-width: 3; stroke-dasharray: 8 8; fill: none; marker-end: url(#arrow2); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7ea8e6" />
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#f1a742" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="680" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图1-1 研究逻辑与论文结构图</text>
+  <text class="muted s" x="70" y="98">主线不是“是否完成切换”，而是“产品逻辑为何难以成熟，以及怎样逐步提升成熟度”。</text>
+
+  <rect class="card accent-soft" x="60" y="150" width="220" height="110" />
+  <text class="ink h" x="86" y="192">研究背景</text>
+  <text class="muted s" x="86" y="222">工厂建成并不等于</text>
+  <text class="muted s" x="86" y="246">产品逻辑自然形成</text>
+
+  <rect class="card accent-soft" x="340" y="150" width="220" height="110" />
+  <text class="ink h" x="366" y="192">研究问题</text>
+  <text class="muted s" x="366" y="222">连续谱上的位置</text>
+  <text class="muted s" x="366" y="246">约束如何阻碍成熟</text>
+
+  <rect class="card accent-soft" x="620" y="150" width="220" height="110" />
+  <text class="ink h" x="646" y="192">概念与理论</text>
+  <text class="muted s" x="646" y="222">项目逻辑—产品逻辑</text>
+  <text class="muted s" x="646" y="246">连续谱 + 五维约束</text>
+
+  <rect class="card good-soft" x="900" y="150" width="240" height="110" />
+  <text class="ink h" x="926" y="192">案例检验</text>
+  <text class="muted s" x="926" y="222">中国案例 + 国际对照</text>
+  <text class="muted s" x="926" y="246">检验框架解释力</text>
+
+  <path class="line" d="M280 205 H340" />
+  <path class="line" d="M560 205 H620" />
+  <path class="line" d="M840 205 H900" />
+
+  <rect class="card warn-soft" x="200" y="340" width="800" height="140" />
+  <text class="ink h" x="230" y="382">核心分析框架：五维约束如何形成“能力陷阱”</text>
+  <text class="muted b" x="230" y="420">需求端约束</text>
+  <text class="muted b" x="380" y="420">组织能力约束</text>
+  <text class="muted b" x="570" y="420">商业模式约束</text>
+  <text class="muted b" x="760" y="420">制度环境约束</text>
+  <text class="muted b" x="930" y="420">价值链位置约束</text>
+  <text class="muted tiny" x="230" y="452">订单不稳</text>
+  <text class="muted tiny" x="380" y="452">人才/KPI错位</text>
+  <text class="muted tiny" x="570" y="452">高固定成本</text>
+  <text class="muted tiny" x="760" y="452">逐项目审批</text>
+  <text class="muted tiny" x="930" y="452">定义权不足</text>
+
+  <path class="dash" d="M730 260 V330" />
+  <path class="dash" d="M1020 260 V330" />
+
+  <rect class="card" x="300" y="540" width="620" height="88" />
+  <text class="ink h" x="326" y="576">管理输出：五条破局路径 + 差异化实施优先序</text>
+  <text class="muted s" x="326" y="606">锁定高重复性场景、产品平台化、双元组织、DfMA前移、标准与认证参与</text>
+
+  <path class="line" d="M600 480 V540" />
+
+  <text class="muted tiny" x="70" y="650">资料来源：作者根据全文研究设计、分析框架与章节安排绘制。</text>
+</svg>

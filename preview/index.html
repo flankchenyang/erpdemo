@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>论文预览</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <button id="panelToggle" class="panel-toggle" type="button" aria-expanded="true">
+        隐藏信息卡
+      </button>
+      <aside class="side-panel" id="sidePanel">
+        <div class="panel-card">
+          <p class="eyebrow">Markdown Preview</p>
+          <h1>论文预览台</h1>
+          <p class="meta" id="fileName">20260315.md</p>
+          <p class="meta" id="updatedAt">正在读取更新时间...</p>
+          <p class="meta" id="charCount">正在统计论文字数...</p>
+          <button id="refreshButton" type="button">立即刷新</button>
+          <p class="hint">页面会自动检查文件更新。你只需要修改 Markdown，再回来看即可。</p>
+        </div>
+      </aside>
+      <main class="content-shell">
+        <article class="paper" id="paper">
+          <p class="loading">正在渲染论文内容...</p>
+        </article>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      const paper = document.querySelector("#paper");
+      const fileName = document.querySelector("#fileName");
+      const updatedAt = document.querySelector("#updatedAt");
+      const charCount = document.querySelector("#charCount");
+      const refreshButton = document.querySelector("#refreshButton");
+      const panelToggle = document.querySelector("#panelToggle");
+      const sidePanel = document.querySelector("#sidePanel");
+      
+      let isPanelVisible = true;
+      
+      function syncPanelState() {
+        sidePanel.hidden = !isPanelVisible;
+        document.body.classList.toggle("panel-hidden", !isPanelVisible);
+        panelToggle.textContent = isPanelVisible ? "隐藏信息卡" : "显示信息卡";
+        panelToggle.setAttribute("aria-expanded", String(isPanelVisible));
+      }
+      
+      async function renderDocument() {
+        try {
+          const response = await fetch("../20260315.md", { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error(`文档读取失败: ${response.status}`);
+          }
+          
+          const markdown = await response.text();
+          const html = marked(markdown);
+          paper.innerHTML = html;
+          updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
+          charCount.textContent = `当前论文字数：${markdown.length.toLocaleString('zh-CN')} 字`;
+        } catch (error) {
+          paper.innerHTML = `<p class="loading">${error.message}</p>`;
+        }
+      }
+      
+      refreshButton.addEventListener("click", async () => {
+        refreshButton.disabled = true;
+        try {
+          await renderDocument();
+        } finally {
+          refreshButton.disabled = false;
+        }
+      });
+      
+      panelToggle.addEventListener("click", () => {
+        isPanelVisible = !isPanelVisible;
+        syncPanelState();
+      });
+      
+      syncPanelState();
+      
+      // 初始加载
+      renderDocument();
+      
+      // 自动检查更新
+      setInterval(() => {
+        renderDocument().catch(() => {});
+      }, 5000);
+    </script>
+  </body>
+</html>

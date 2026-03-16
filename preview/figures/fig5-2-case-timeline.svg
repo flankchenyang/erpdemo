@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">图5-2 主案例企业模块化业务演化时间线</title>
+  <desc id="desc">展示主案例企业从战略建厂、前期闲置、香港窗口期、窗口收缩到碎片化订单阶段的演化过程。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .card { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 18; ry: 18; }
+      .phase1 { fill: #eef5ff; }
+      .phase2 { fill: #fff7df; }
+      .phase3 { fill: #eef8f2; }
+      .phase4 { fill: #fef1ef; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 21px; font-weight: 700; }
+      .b { font-size: 17px; font-weight: 600; }
+      .s { font-size: 15px; }
+      .tiny { font-size: 14px; }
+      .axis { stroke: #6b95cf; stroke-width: 5; fill: none; marker-end: url(#arrow); }
+      .tick { stroke: #6b95cf; stroke-width: 3; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6b95cf" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="720" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图5-2 主案例企业模块化业务演化时间线</text>
+  <text class="muted s" x="70" y="98">这条时间线最想说明的是：问题不是“工厂有没有建成”，而是“窗口期之后，产品逻辑有没有留下来”。</text>
+
+  <path class="axis" d="M110 300 H1080" />
+  <line class="tick" x1="170" y1="280" x2="170" y2="320" />
+  <line class="tick" x1="380" y1="280" x2="380" y2="320" />
+  <line class="tick" x1="610" y1="280" x2="610" y2="320" />
+  <line class="tick" x1="840" y1="280" x2="840" y2="320" />
+  <line class="tick" x1="1030" y1="280" x2="1030" y2="320" />
+
+  <rect class="card phase1" x="70" y="360" width="200" height="170" />
+  <text class="ink h" x="96" y="402">阶段一：战略建厂</text>
+  <text class="muted s" x="96" y="438">• 先投入工厂，再找市场</text>
+  <text class="muted s" x="96" y="468">• 市场定义晚于产能配置</text>
+  <text class="muted s" x="96" y="498">• 转型起点更像战略押注</text>
+
+  <rect class="card phase1" x="280" y="150" width="200" height="170" />
+  <text class="ink h" x="306" y="192">阶段二：前期闲置</text>
+  <text class="muted s" x="306" y="228">• 前两年项目稀少</text>
+  <text class="muted s" x="306" y="258">• 工厂长期承担固定成本</text>
+  <text class="muted s" x="306" y="288">• 盈亏平衡约1300箱/年</text>
+
+  <rect class="card phase2" x="510" y="360" width="220" height="190" />
+  <text class="ink h" x="536" y="402">阶段三：香港窗口期</text>
+  <text class="muted s" x="536" y="438">• 大体量订单集中进入</text>
+  <text class="muted s" x="536" y="468">• 每年约10000箱</text>
+  <text class="muted s" x="536" y="498">• 产能饱满并实现盈利</text>
+  <text class="muted s" x="536" y="528">• 但更多是在检验履约能力</text>
+
+  <rect class="card phase3" x="760" y="150" width="200" height="170" />
+  <text class="ink h" x="786" y="192">阶段四：窗口收缩</text>
+  <text class="muted s" x="786" y="228">• 香港钢结构市场减弱</text>
+  <text class="muted s" x="786" y="258">• 迅速回到产能消化压力</text>
+  <text class="muted s" x="786" y="288">• 暴露高固定成本问题</text>
+
+  <rect class="card phase4" x="970" y="360" width="180" height="190" />
+  <text class="ink h" x="996" y="402">阶段五：碎片化订单</text>
+  <text class="muted s" x="996" y="438">• 小散项目增多</text>
+  <text class="muted s" x="996" y="468">• 组织接口和知识沉淀问题暴露</text>
+  <text class="muted s" x="996" y="508">• 产品逻辑仍未真正成熟</text>
+
+  <text class="muted tiny" x="70" y="646">关键观察：窗口期可以装满产能，但不会自动沉淀为可跨场景复用的产品规则、平台知识和稳定需求。</text>
+  <text class="muted tiny" x="70" y="674">资料来源：作者根据主体案例访谈、内部文件与第五章分析绘制。</text>
+</svg>

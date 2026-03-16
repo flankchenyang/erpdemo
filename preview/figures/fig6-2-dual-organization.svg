@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">图6-2 双元组织架构示意图</title>
+  <desc id="desc">展示项目业务线与产品平台线的分工、共享接口以及不同考核逻辑。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .panel { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 20; ry: 20; }
+      .project { fill: #eef5ff; }
+      .product { fill: #eef8f2; }
+      .shared { fill: #fff7df; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 21px; font-weight: 700; }
+      .b { font-size: 17px; font-weight: 600; }
+      .s { font-size: 15px; }
+      .tiny { font-size: 14px; }
+      .line { stroke: #7ea8e6; stroke-width: 3.5; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #aab9c8; stroke-width: 3; fill: none; marker-end: url(#arrow2); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7ea8e6" />
+    </marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#aab9c8" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="780" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图6-2 双元组织架构示意图</text>
+  <text class="muted s" x="70" y="98">核心不是把工厂从项目里“独立出去”就结束，而是让项目线和产品线拥有不同考核、不同职责，同时通过接口机制保持可控协同。</text>
+
+  <rect class="panel shared" x="390" y="120" width="420" height="96" />
+  <text class="ink h" x="420" y="160">集团 / 事业群管理层</text>
+  <text class="muted s" x="420" y="192">负责战略取舍、资源分配与阶段目标，不直接替代两条业务线的日常决策</text>
+
+  <rect class="panel project" x="80" y="280" width="420" height="320" />
+  <text class="ink h" x="110" y="322">项目业务线（当期现金流）</text>
+  <text class="muted s" x="110" y="356">• 市场开发 / 投标 / 业主沟通</text>
+  <text class="muted s" x="110" y="388">• 项目履约 / 节点交付 / 回款</text>
+  <text class="muted s" x="110" y="420">• 把需求拆解为成本、工期、法规、品牌约束</text>
+  <text class="muted s" x="110" y="470">考核逻辑：</text>
+  <text class="muted s" x="110" y="500">利润率、回款、工期、客户满意度</text>
+
+  <rect class="panel product" x="700" y="280" width="420" height="320" />
+  <text class="ink h" x="730" y="322">产品平台线（未来能力建设）</text>
+  <text class="muted s" x="730" y="356">• 产品平台团队 / 产品经理</text>
+  <text class="muted s" x="730" y="388">• DfMA 团队 / 工艺品质 / 工厂运营</text>
+  <text class="muted s" x="730" y="420">• 沉淀标准件、接口规则、工艺和知识库</text>
+  <text class="muted s" x="730" y="470">考核逻辑：</text>
+  <text class="muted s" x="730" y="500">复用率、平台成熟度、成本下降率、设计冻结率</text>
+
+  <rect class="panel shared" x="445" y="640" width="310" height="90" />
+  <text class="ink h" x="474" y="678">项目—产品接口机制</text>
+  <text class="muted s" x="474" y="708">负责需求过滤、边界反馈、变更责任与排期协调</text>
+
+  <path class="line" d="M600 216 V260" />
+  <path class="line" d="M600 260 H290 V280" />
+  <path class="line" d="M600 260 H910 V280" />
+  <path class="soft" d="M290 600 V640 H445" />
+  <path class="soft" d="M910 600 V640 H755" />
+
+  <text class="muted tiny" x="70" y="756">资料来源：作者根据第六章双元组织设计建议绘制。</text>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">图7-1 全文结论收束图</title>
+  <desc id="desc">展示全文从核心现象、解释框架到管理结论的整体收束关系。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .card { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 20; ry: 20; }
+      .top { fill: #eef5ff; }
+      .mid { fill: #fff7df; }
+      .low { fill: #eef8f2; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 22px; font-weight: 700; }
+      .b { font-size: 17px; font-weight: 600; }
+      .s { font-size: 15px; }
+      .tiny { font-size: 14px; }
+      .line { stroke: #7ea8e6; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7ea8e6" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="780" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图7-1 全文结论收束图</text>
+  <text class="muted s" x="70" y="98">这张图的核心作用，是把全文最终收束成一句话：问题不是工厂有没有建成，而是产品逻辑为什么长期难以成熟，以及怎样逐步把关键能力迁移为平台资产。</text>
+
+  <rect class="card top" x="160" y="150" width="880" height="110" />
+  <text class="ink h" x="190" y="192">核心现象</text>
+  <text class="muted s" x="320" y="192">工厂建成以后，企业仍然在相当程度上按项目逻辑运转，产品逻辑的形成是渐进且反复受阻的过程。</text>
+  <text class="muted s" x="320" y="224">因此研究重点不是“是否完成切换”，而是“产品逻辑成熟度为何长期停留在较低水平”。</text>
+
+  <rect class="card mid" x="120" y="340" width="300" height="180" />
+  <text class="ink h" x="148" y="382">解释框架</text>
+  <text class="muted s" x="148" y="418">• 项目逻辑—产品逻辑连续谱</text>
+  <text class="muted s" x="148" y="450">• 五维约束模型</text>
+  <text class="muted s" x="148" y="482">• 能力陷阱反馈链条</text>
+
+  <rect class="card mid" x="450" y="340" width="300" height="180" />
+  <text class="ink h" x="478" y="382">案例检验</text>
+  <text class="muted s" x="478" y="418">• 总包转型型企业</text>
+  <text class="muted s" x="478" y="450">• 中集与 Herring Road</text>
+  <text class="muted s" x="478" y="482">• Katerra 与英国MMC群体</text>
+
+  <rect class="card mid" x="780" y="340" width="300" height="180" />
+  <text class="ink h" x="808" y="382">管理结论</text>
+  <text class="muted s" x="808" y="418">• 先找稳定场景，再谈规模扩张</text>
+  <text class="muted s" x="808" y="450">• 先建平台与组织，再谈产业集成</text>
+  <text class="muted s" x="808" y="482">• 先做价值链嵌入，再谈全链条复制</text>
+
+  <path class="line" d="M600 260 V320" />
+  <path class="line" d="M270 520 V600 H600" />
+  <path class="line" d="M600 520 V600" />
+  <path class="line" d="M930 520 V600 H600" />
+
+  <rect class="card low" x="260" y="600" width="680" height="110" />
+  <text class="ink h" x="288" y="642">最终收束</text>
+  <text class="muted s" x="400" y="642">模块化转型不是一次性跳到纯产品逻辑，而是在项目逻辑长期存在的前提下，</text>
+  <text class="muted s" x="400" y="674">逐步把需求选择、平台规则、DfMA能力、组织接口和标准积累从项目归属迁移为平台资产。</text>
+
+  <text class="muted tiny" x="70" y="746">资料来源：作者根据全文研究结论绘制。</text>
+</svg>

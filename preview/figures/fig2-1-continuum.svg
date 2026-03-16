@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">图2-1 项目逻辑—产品逻辑连续谱示意图</title>
+  <desc id="desc">展示项目逻辑与产品逻辑不是二元切换，而是连续谱两端，中间存在有限产品化和平台培育状态。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .panel { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 20; ry: 20; }
+      .left { fill: #fef1ef; }
+      .mid { fill: #fff7df; }
+      .right { fill: #eef8f2; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 22px; font-weight: 700; }
+      .b { font-size: 18px; font-weight: 600; }
+      .s { font-size: 16px; }
+      .tiny { font-size: 14px; }
+      .axis { stroke: #4f7dbc; stroke-width: 6; fill: none; marker-start: url(#arrowL); marker-end: url(#arrowR); }
+      .tick { stroke: #7f94aa; stroke-width: 3; }
+    </style>
+    <marker id="arrowL" markerWidth="12" markerHeight="12" refX="4" refY="6" orient="auto">
+      <path d="M10,0 L2,6 L10,12 Z" fill="#4f7dbc" />
+    </marker>
+    <marker id="arrowR" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,0 L10,6 L2,12 Z" fill="#4f7dbc" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="700" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图2-1 项目逻辑—产品逻辑连续谱示意图</text>
+  <text class="muted s" x="70" y="98">研究重点不是“是否跳到彼岸”，而是企业停留在连续谱的哪个位置，以及为何难以继续向右推进。</text>
+
+  <path class="axis" d="M120 240 H1080" />
+  <line class="tick" x1="250" y1="224" x2="250" y2="256" />
+  <line class="tick" x1="600" y1="214" x2="600" y2="266" />
+  <line class="tick" x1="930" y1="224" x2="930" y2="256" />
+  <text class="ink b" x="110" y="290">更强的项目逻辑</text>
+  <text class="ink b" x="515" y="290">连续谱中部</text>
+  <text class="ink b" x="900" y="290">更成熟的产品逻辑</text>
+
+  <rect class="panel left" x="60" y="340" width="310" height="220" />
+  <text class="ink h" x="88" y="382">项目逻辑主导</text>
+  <text class="muted s" x="88" y="418">• 经营单元以项目为中心</text>
+  <text class="muted s" x="88" y="450">• 成本核算围绕单项目盈亏</text>
+  <text class="muted s" x="88" y="482">• 知识沉淀留在项目团队</text>
+  <text class="muted s" x="88" y="514">• 工厂更多是履约后端</text>
+
+  <rect class="panel mid" x="445" y="320" width="310" height="260" />
+  <text class="ink h" x="473" y="362">有限产品化 / 平台培育</text>
+  <text class="muted s" x="473" y="398">• 稳定场景开始出现</text>
+  <text class="muted s" x="473" y="430">• 底层模块、接口、工艺可复用</text>
+  <text class="muted s" x="473" y="462">• 仍保留大量项目适配工作</text>
+  <text class="muted s" x="473" y="494">• 产品逻辑容易被大项目拉回</text>
+  <text class="muted s" x="473" y="526">• 这是多数企业的真实位置</text>
+
+  <rect class="panel right" x="830" y="340" width="310" height="220" />
+  <text class="ink h" x="858" y="382">更成熟的产品逻辑</text>
+  <text class="muted s" x="858" y="418">• 平台规则开始约束需求</text>
+  <text class="muted s" x="858" y="450">• 产线与供应链节拍更稳定</text>
+  <text class="muted s" x="858" y="482">• 成本与知识跨项目沉淀</text>
+  <text class="muted s" x="858" y="514">• 工厂逐步变成平台资产中心</text>
+
+  <text class="muted tiny" x="70" y="634">左端不是“落后”，右端也不是“一次性切换完成”；企业往往在中间状态长期停留，并在不同项目中前后摆动。</text>
+  <text class="muted tiny" x="70" y="660">资料来源：作者根据第二章概念界定与第五章案例比较绘制。</text>
+</svg>

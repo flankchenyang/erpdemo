@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" fill="none">
+  <rect width="1200" height="760" rx="28" fill="#FFFFFF"/>
+  <rect x="26" y="26" width="1148" height="708" rx="22" fill="#F8FBFE" stroke="#D7E2EC"/>
+  <text x="72" y="100" fill="#15324B" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">模块化扩张中的价值池转移</text>
+  <text x="72" y="142" fill="#4B6478" font-family="Inter, Arial, sans-serif" font-size="19">根据 McKinsey Global Institute（2019）Exhibit 11 整理绘制</text>
+
+  <rect x="78" y="206" width="170" height="74" rx="18" fill="#132E48"/>
+  <rect x="258" y="206" width="170" height="74" rx="18" fill="#183650"/>
+  <rect x="438" y="206" width="170" height="74" rx="18" fill="#1E3E5C"/>
+  <rect x="618" y="206" width="170" height="74" rx="18" fill="#235172"/>
+  <rect x="798" y="206" width="170" height="74" rx="18" fill="#296382"/>
+  <rect x="978" y="206" width="144" height="74" rx="18" fill="#2F7594"/>
+
+  <text x="118" y="252" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">开发</text>
+  <text x="289" y="239" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">设计与</text>
+  <text x="289" y="265" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">工程</text>
+  <text x="469" y="239" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">总承包</text>
+  <text x="469" y="265" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">商</text>
+  <text x="671" y="252" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">OEM / 模块商</text>
+  <text x="831" y="239" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">专业</text>
+  <text x="831" y="265" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">分包</text>
+  <text x="1003" y="239" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">运维与</text>
+  <text x="1003" y="265" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600">维护</text>
+
+  <text x="78" y="332" fill="#51697C" font-family="Inter, Arial, sans-serif" font-size="20">示例利润率区间</text>
+
+  <g>
+    <ellipse cx="163" cy="392" rx="52" ry="32" fill="#17A36B" fill-opacity="0.14" stroke="#17A36B" stroke-width="2"/>
+    <text x="138" y="400" fill="#167B52" font-family="JetBrains Mono, monospace" font-size="24" font-weight="700">&gt;10%</text>
+    <ellipse cx="343" cy="392" rx="52" ry="32" fill="#1E6FB9" fill-opacity="0.14" stroke="#1E6FB9" stroke-width="2"/>
+    <text x="316" y="400" fill="#175B96" font-family="JetBrains Mono, monospace" font-size="24" font-weight="700">5–10%</text>
+    <ellipse cx="523" cy="392" rx="44" ry="32" fill="#F0A53B" fill-opacity="0.16" stroke="#D28A16" stroke-width="2"/>
+    <text x="501" y="400" fill="#9B610A" font-family="JetBrains Mono, monospace" font-size="24" font-weight="700">2–4%</text>
+    <ellipse cx="703" cy="392" rx="48" ry="32" fill="#17A36B" fill-opacity="0.14" stroke="#17A36B" stroke-width="2"/>
+    <text x="675" y="400" fill="#167B52" font-family="JetBrains Mono, monospace" font-size="24" font-weight="700">3–15%</text>
+    <ellipse cx="883" cy="392" rx="44" ry="32" fill="#F0A53B" fill-opacity="0.16" stroke="#D28A16" stroke-width="2"/>
+    <text x="861" y="400" fill="#9B610A" font-family="JetBrains Mono, monospace" font-size="24" font-weight="700">3–6%</text>
+    <ellipse cx="1050" cy="392" rx="40" ry="32" fill="#1E6FB9" fill-opacity="0.14" stroke="#1E6FB9" stroke-width="2"/>
+    <text x="1031" y="400" fill="#175B96" font-family="JetBrains Mono, monospace" font-size="24" font-weight="700">2–3%</text>
+  </g>
+
+  <line x1="78" y1="454" x2="1122" y2="454" stroke="#DCE6EE" stroke-width="2"/>
+  <text x="78" y="500" fill="#51697C" font-family="Inter, Arial, sans-serif" font-size="20">价值池变化与典型压力</text>
+
+  <rect x="78" y="528" width="170" height="128" rx="18" fill="#EAF6EF" stroke="#BFE4CF"/>
+  <text x="98" y="565" fill="#1D6B49" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">扩张</text>
+  <text x="98" y="598" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">产品化开发、持有型运营、</text>
+  <text x="98" y="624" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">重复场景打包能力更值钱</text>
+
+  <rect x="258" y="528" width="170" height="128" rx="18" fill="#EEF5FB" stroke="#C7DCEE"/>
+  <text x="278" y="565" fill="#175B96" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">扩张</text>
+  <text x="278" y="598" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">DfMA、标准接口设计、</text>
+  <text x="278" y="624" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">工程知识沉淀更重要</text>
+
+  <rect x="438" y="528" width="170" height="128" rx="18" fill="#FFF3E1" stroke="#F0D3A0"/>
+  <text x="458" y="565" fill="#9B610A" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">受压</text>
+  <text x="458" y="598" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">若仅做现场统筹与分包管理，</text>
+  <text x="458" y="624" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">更易被挤向商品化环节</text>
+
+  <rect x="618" y="528" width="170" height="128" rx="18" fill="#EAF6EF" stroke="#BFE4CF"/>
+  <text x="638" y="565" fill="#1D6B49" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">扩张</text>
+  <text x="638" y="598" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">标准模块、封装方案、</text>
+  <text x="638" y="624" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">规模制造与供应整合受益</text>
+
+  <rect x="798" y="528" width="170" height="128" rx="18" fill="#FFF3E1" stroke="#F0D3A0"/>
+  <text x="818" y="565" fill="#9B610A" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">受压</text>
+  <text x="818" y="598" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">传统专业工种若未模块化，</text>
+  <text x="818" y="624" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">更容易被拆分或替代</text>
+
+  <rect x="978" y="528" width="144" height="128" rx="18" fill="#EEF5FB" stroke="#C7DCEE"/>
+  <text x="998" y="565" fill="#175B96" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">延展</text>
+  <text x="998" y="598" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">设施运维、</text>
+  <text x="998" y="624" fill="#50687B" font-family="Inter, Arial, sans-serif" font-size="18">数据服务与生命周期</text>
+
+  <rect x="92" y="86" width="8" height="72" rx="4" fill="#1E6FB9"/>
+</svg>

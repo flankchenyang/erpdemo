@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图6-1 五维约束—五条路径对应图</title>
+  <desc id="desc">展示五维约束与第六章五条破局路径的一一对应关系，以及共同的转型目标。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .left { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 18; ry: 18; }
+      .right { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 18; ry: 18; }
+      .goal { fill: #eef8f2; stroke: #b8d7c4; stroke-width: 2.5; rx: 22; ry: 22; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 21px; font-weight: 700; }
+      .b { font-size: 17px; font-weight: 600; }
+      .s { font-size: 15px; }
+      .tiny { font-size: 14px; }
+      .line { stroke: #7ea8e6; stroke-width: 3.5; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7ea8e6" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="760" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图6-1 五维约束—五条路径对应图</text>
+  <text class="muted s" x="70" y="98">这张图的重点是告诉评审：第六章不是五条分散建议，而是对第五章识别出的五类约束进行定向回应。</text>
+
+  <rect class="left" x="70" y="150" width="280" height="72" />
+  <text class="ink b" x="96" y="193">需求端约束</text>
+  <rect class="left" x="70" y="250" width="280" height="72" />
+  <text class="ink b" x="96" y="293">商业模式约束</text>
+  <rect class="left" x="70" y="350" width="280" height="72" />
+  <text class="ink b" x="96" y="393">组织能力约束</text>
+  <rect class="left" x="70" y="450" width="280" height="72" />
+  <text class="ink b" x="96" y="493">价值链位置约束</text>
+  <rect class="left" x="70" y="550" width="280" height="72" />
+  <text class="ink b" x="96" y="593">制度环境约束</text>
+
+  <rect class="right" x="860" y="150" width="270" height="72" />
+  <text class="ink b" x="888" y="193">路径一：锁定高重复性场景</text>
+  <rect class="right" x="860" y="250" width="270" height="72" />
+  <text class="ink b" x="888" y="293">路径二：产品平台化战略</text>
+  <rect class="right" x="860" y="350" width="270" height="72" />
+  <text class="ink b" x="888" y="393">路径三：双元组织设计</text>
+  <rect class="right" x="860" y="450" width="270" height="72" />
+  <text class="ink b" x="888" y="493">路径四：DfMA 价值链前移</text>
+  <rect class="right" x="860" y="550" width="270" height="72" />
+  <text class="ink b" x="888" y="593">路径五：标准与认证参与</text>
+
+  <path class="line" d="M350 186 H860" />
+  <path class="line" d="M350 286 H860" />
+  <path class="line" d="M350 386 H860" />
+  <path class="line" d="M350 486 H860" />
+  <path class="line" d="M350 586 H860" />
+
+  <rect class="goal" x="350" y="300" width="420" height="180" />
+  <text class="ink h" x="382" y="344">共同服务的深层目标</text>
+  <text class="muted s" x="382" y="382">让更多关键能力从“项目归属”</text>
+  <text class="muted s" x="382" y="414">逐步迁移为“平台归属”</text>
+  <text class="muted s" x="382" y="446">培育有限但真实的产品逻辑</text>
+
+  <text class="muted tiny" x="70" y="718">资料来源：作者根据第六章路径设计绘制。</text>
+</svg>

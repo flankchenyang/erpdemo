@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920">
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .card { fill: #ffffff; stroke: #cfd8e3; stroke-width: 2; rx: 12; ry: 12; }
+      .strong { fill: #eaf2ff; stroke: #2d6cdf; stroke-width: 2; rx: 12; ry: 12; }
+      .decision { fill: #fff8e8; stroke: #c98b12; stroke-width: 2; }
+      .output { fill: #edf9f0; stroke: #2d8a4b; stroke-width: 2; rx: 12; ry: 12; }
+      .note { fill: #f2f5f8; stroke: #d7dde5; stroke-width: 1.5; rx: 10; ry: 10; }
+      .title { font: 700 30px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #1f2d3d; }
+      .subtitle { font: 500 16px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #59687a; }
+      .label { font: 600 20px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #1f2d3d; }
+      .body { font: 500 16px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #334155; }
+      .small { font: 500 14px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #64748b; }
+      .arrow { stroke: #6b7c93; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .dashed { stroke-dasharray: 8 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#6b7c93"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="920"/>
+
+  <text class="title" x="60" y="60">DfMA 前置设计流程图</text>
+  <text class="subtitle" x="60" y="92">根据 Yuan et al. (2018) 的流程图整理绘制，突出“把制造与装配约束前置到设计阶段”。</text>
+
+  <rect class="strong" x="80" y="150" width="240" height="86"/>
+  <text class="label" x="120" y="188">1. 建立建筑信息模型</text>
+  <text class="small" x="120" y="216">先形成可讨论、可拆分的基础模型</text>
+
+  <rect class="strong" x="430" y="150" width="250" height="86"/>
+  <text class="label" x="468" y="188">2. 拆分设计 + DfMA 分析</text>
+  <text class="small" x="468" y="216">同步考虑制造可行性与装配可行性</text>
+
+  <polygon class="decision" points="825,148 945,193 825,238 705,193"/>
+  <text class="label" x="756" y="188">现有标准构件</text>
+  <text class="label" x="775" y="213">是否可直接满足？</text>
+
+  <rect class="card" x="1030" y="150" width="250" height="86"/>
+  <text class="label" x="1066" y="188">3A. 直接调用标准构件</text>
+  <text class="small" x="1066" y="216">复用标准件、接口和装配功能</text>
+
+  <rect class="card" x="1030" y="300" width="250" height="110"/>
+  <text class="label" x="1066" y="338">3B. 创建新构件</text>
+  <text class="body" x="1066" y="370">路径一：基于族模板创建</text>
+  <text class="body" x="1066" y="398">路径二：通过 BIM 二次开发创建</text>
+
+  <rect class="strong" x="430" y="330" width="250" height="86"/>
+  <text class="label" x="468" y="368">4. 回填到装配式模型</text>
+  <text class="small" x="468" y="396">形成能支撑制造和施工的模型</text>
+
+  <polygon class="decision" points="560,485 690,530 560,575 430,530"/>
+  <text class="label" x="500" y="526">是否满足 DFM？</text>
+  <text class="small" x="468" y="548">尺寸、模具、产线、成本</text>
+
+  <polygon class="decision" points="560,645 690,690 560,735 430,690"/>
+  <text class="label" x="500" y="686">是否满足 DFA？</text>
+  <text class="small" x="462" y="708">运输、吊装、接口、现场安装</text>
+
+  <rect class="output" x="800" y="615" width="260" height="90"/>
+  <text class="label" x="836" y="653">输出 1：施工信息模型</text>
+  <text class="small" x="836" y="681">支撑审批、现场协调与施工交底</text>
+
+  <rect class="output" x="1080" y="615" width="260" height="90"/>
+  <text class="label" x="1116" y="653">输出 2：生产信息模型</text>
+  <text class="small" x="1116" y="681">支撑工厂排产、加工与质量控制</text>
+
+  <rect class="note" x="70" y="785" width="1260" height="95"/>
+  <text class="label" x="98" y="824">管理含义</text>
+  <text class="body" x="98" y="854">这张图最重要的不是“软件怎么画图”，而是把原本在后端暴露的问题前置到方案阶段回答：哪些需求可以标准化，哪些变更会影响模具、排产、运输和吊装，哪些接口必须在设计阶段冻结。</text>
+
+  <path class="arrow" d="M320 193 L430 193"/>
+  <path class="arrow" d="M680 193 L705 193"/>
+  <path class="arrow" d="M945 193 L1030 193"/>
+  <path class="arrow" d="M825 238 L825 355 L1030 355"/>
+  <path class="arrow" d="M1030 355 L680 355"/>
+  <path class="arrow" d="M555 236 L555 330"/>
+  <path class="arrow" d="M555 416 L555 485"/>
+  <path class="arrow" d="M690 530 L930 530 L930 615"/>
+  <path class="arrow" d="M690 690 L800 690"/>
+  <path class="arrow" d="M1060 690 L1080 690"/>
+  <path class="arrow dashed" d="M430 530 L250 530 L250 193 L80 193"/>
+  <path class="arrow dashed" d="M430 690 L220 690 L220 193 L80 193"/>
+
+  <text class="small" x="963" y="178">Yes</text>
+  <text class="small" x="845" y="274">No</text>
+  <text class="small" x="700" y="520">Yes</text>
+  <text class="small" x="700" y="680">Yes</text>
+  <text class="small" x="328" y="520">No，返回前端调整</text>
+  <text class="small" x="315" y="680">No，返回前端调整</text>
+</svg>

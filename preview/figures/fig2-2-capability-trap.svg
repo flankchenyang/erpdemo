@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图2-2 五维约束叠加形成能力陷阱的机制图</title>
+  <desc id="desc">展示五维约束如何通过传导链条形成能力陷阱，并持续把企业拉回项目逻辑。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .card { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 18; ry: 18; }
+      .pill1 { fill: #eef5ff; }
+      .pill2 { fill: #edf8f0; }
+      .pill3 { fill: #fff3df; }
+      .pill4 { fill: #f7efff; }
+      .pill5 { fill: #fef1ef; }
+      .flow { fill: #ffffff; stroke: #6b95cf; stroke-width: 2.5; rx: 16; ry: 16; }
+      .danger { fill: #fff0ef; stroke: #d77a74; stroke-width: 3; rx: 18; ry: 18; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 20px; font-weight: 700; }
+      .b { font-size: 17px; font-weight: 600; }
+      .s { font-size: 15px; }
+      .tiny { font-size: 14px; }
+      .line { stroke: #6b95cf; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .loop { stroke: #d77a74; stroke-width: 3.5; fill: none; stroke-dasharray: 10 8; marker-end: url(#arrowRed); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6b95cf" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#d77a74" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="760" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图2-2 五维约束叠加形成“能力陷阱”的机制图</text>
+  <text class="muted s" x="70" y="98">关键不在于单一约束是否存在，而在于多个约束如何互相强化，持续把企业拉回项目逻辑。</text>
+
+  <rect class="card pill1" x="70" y="138" width="180" height="80" />
+  <text class="ink b" x="98" y="176">需求端约束</text>
+  <text class="muted s" x="98" y="202">订单不稳、需求离散</text>
+
+  <rect class="card pill2" x="280" y="138" width="180" height="80" />
+  <text class="ink b" x="308" y="176">组织能力约束</text>
+  <text class="muted s" x="308" y="202">项目人才与KPI主导</text>
+
+  <rect class="card pill3" x="490" y="138" width="180" height="80" />
+  <text class="ink b" x="518" y="176">商业模式约束</text>
+  <text class="muted s" x="518" y="202">高固定成本、定价弱</text>
+
+  <rect class="card pill4" x="700" y="138" width="180" height="80" />
+  <text class="ink b" x="728" y="176">制度环境约束</text>
+  <text class="muted s" x="728" y="202">逐项目审批、认证缺位</text>
+
+  <rect class="card pill5" x="910" y="138" width="200" height="80" />
+  <text class="ink b" x="938" y="176">价值链位置约束</text>
+  <text class="muted s" x="938" y="202">产品定义权不足</text>
+
+  <rect class="flow" x="90" y="310" width="150" height="90" />
+  <text class="ink b" x="114" y="350">需求不稳定</text>
+  <text class="muted s" x="114" y="376">订单不可预期</text>
+
+  <rect class="flow" x="270" y="310" width="150" height="90" />
+  <text class="ink b" x="288" y="350">产能利用率低</text>
+  <text class="muted s" x="288" y="376">工厂节拍难形成</text>
+
+  <rect class="flow" x="450" y="310" width="150" height="90" />
+  <text class="ink b" x="470" y="350">规模经济落空</text>
+  <text class="muted s" x="470" y="376">标准化收益难释放</text>
+
+  <rect class="flow" x="630" y="310" width="150" height="90" />
+  <text class="ink b" x="650" y="350">商业模式受压</text>
+  <text class="muted s" x="650" y="376">工厂先变财务负担</text>
+
+  <rect class="flow" x="810" y="310" width="150" height="90" />
+  <text class="ink b" x="834" y="350">能力投入受挤压</text>
+  <text class="muted s" x="834" y="376">设计/平台建设不足</text>
+
+  <path class="line" d="M240 355 H270" />
+  <path class="line" d="M420 355 H450" />
+  <path class="line" d="M600 355 H630" />
+  <path class="line" d="M780 355 H810" />
+
+  <rect class="danger" x="380" y="500" width="430" height="110" />
+  <text class="ink h" x="410" y="542">能力陷阱</text>
+  <text class="muted s" x="410" y="572">既有项目能力持续产生短期回报</text>
+  <text class="muted s" x="410" y="596">新能力探索不断被推迟，企业被拉回项目逻辑</text>
+
+  <path class="loop" d="M960 400 C1040 430, 1080 500, 980 580 C890 650, 250 650, 140 400" />
+  <text class="muted tiny" x="790" y="668">反馈回路：产品竞争力弱 → 更难获得稳定需求 → 企业继续依赖项目逻辑</text>
+  <text class="muted tiny" x="70" y="720">资料来源：作者根据第二章分析框架与第四章机制分析绘制。</text>
+</svg>

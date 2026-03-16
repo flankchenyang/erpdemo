@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">图6-3 三阶段转型路线图</title>
+  <desc id="desc">展示企业从0到2年、2到5年、5年以上三个阶段的关键任务、重点路径和阶段性目标。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fbff; }
+      .stage1 { fill: #eef5ff; stroke: #c9dbf3; stroke-width: 2.5; rx: 22; ry: 22; }
+      .stage2 { fill: #fff7df; stroke: #ead39a; stroke-width: 2.5; rx: 22; ry: 22; }
+      .stage3 { fill: #eef8f2; stroke: #b8d7c4; stroke-width: 2.5; rx: 22; ry: 22; }
+      .goal { fill: #ffffff; stroke: #d8e2ee; stroke-width: 2; rx: 18; ry: 18; }
+      .ink { fill: #1d2a3a; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .muted { fill: #5c6b7c; font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif; }
+      .title { font-size: 30px; font-weight: 700; }
+      .h { font-size: 21px; font-weight: 700; }
+      .b { font-size: 17px; font-weight: 600; }
+      .s { font-size: 15px; }
+      .tiny { font-size: 14px; }
+      .line { stroke: #7ea8e6; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7ea8e6" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="760" rx="28" ry="28" />
+  <text class="ink title" x="70" y="64">图6-3 三阶段转型路线图</text>
+  <text class="muted s" x="70" y="98">这张图想告诉评审：本文的建议不是“全面推进”，而是一个有节奏、有重点、允许企业逐步抬升成熟度的实施顺序。</text>
+
+  <rect class="stage1" x="70" y="170" width="320" height="360" />
+  <text class="ink h" x="100" y="212">第一阶段（0—2年）</text>
+  <text class="muted b" x="100" y="248">目标：先找到最小闭环</text>
+  <text class="muted s" x="100" y="288">• 锁定1—2个高重复性目标场景</text>
+  <text class="muted s" x="100" y="320">• 建立相对独立的MiC业务组织</text>
+  <text class="muted s" x="100" y="352">• 初步冻结平台层基本规格</text>
+  <text class="muted s" x="100" y="398">重点路径：路径一 + 路径三</text>
+  <text class="muted s" x="100" y="442">阶段性结果：</text>
+  <text class="muted s" x="100" y="472">至少2—3个项目重复调用相似标准</text>
+  <text class="muted s" x="100" y="500">证明产品逻辑具备最小可行性</text>
+
+  <rect class="stage2" x="440" y="170" width="320" height="360" />
+  <text class="ink h" x="470" y="212">第二阶段（2—5年）</text>
+  <text class="muted b" x="470" y="248">目标：把闭环做成体系</text>
+  <text class="muted s" x="470" y="288">• 建立三层产品架构</text>
+  <text class="muted s" x="470" y="320">• 建立内部 DfMA 团队</text>
+  <text class="muted s" x="470" y="352">• 搭建 PLM 数字基础设施</text>
+  <text class="muted s" x="470" y="398">重点路径：路径二 + 路径四</text>
+  <text class="muted s" x="470" y="442">阶段性结果：</text>
+  <text class="muted s" x="470" y="472">平台规则逐步稳定，工艺与数据开始沉淀</text>
+  <text class="muted s" x="470" y="500">工厂不再只是被动接单的执行端</text>
+
+  <rect class="stage3" x="810" y="170" width="320" height="360" />
+  <text class="ink h" x="840" y="212">第三阶段（5年以上）</text>
+  <text class="muted b" x="840" y="248">目标：形成制度与市场外溢</text>
+  <text class="muted s" x="840" y="288">• 参与国家/地方标准制定</text>
+  <text class="muted s" x="840" y="320">• 向产业集成商方向升级</text>
+  <text class="muted s" x="840" y="352">• 推动跨区域复制与复用</text>
+  <text class="muted s" x="840" y="398">重点路径：路径五</text>
+  <text class="muted s" x="840" y="442">阶段性结果：</text>
+  <text class="muted s" x="840" y="472">先发优势转化为制度与品牌壁垒</text>
+  <text class="muted s" x="840" y="500">成熟度从局部突破走向规模扩展</text>
+
+  <path class="line" d="M390 350 H440" />
+  <path class="line" d="M760 350 H810" />
+
+  <rect class="goal" x="250" y="600" width="700" height="90" />
+  <text class="ink h" x="278" y="638">总目标：不是一次性“跳到产品逻辑彼岸”，而是逐步提高产品逻辑成熟度</text>
+  <text class="muted s" x="278" y="668">每个阶段都应留下可复用的平台规则、知识资产和组织能力，而不是只留下单个项目业绩。</text>
+
+  <text class="muted tiny" x="70" y="730">资料来源：作者根据第六章6.6.2实施优先序绘制。</text>
+</svg>

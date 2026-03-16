@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="860" viewBox="0 0 1320 860">
+  <defs>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .card { fill: #ffffff; stroke: #cfd8e3; stroke-width: 2; rx: 12; ry: 12; }
+      .accent { fill: #eaf2ff; stroke: #2d6cdf; stroke-width: 2; rx: 12; ry: 12; }
+      .output { fill: #edf9f0; stroke: #2d8a4b; stroke-width: 2; rx: 12; ry: 12; }
+      .note { fill: #f2f5f8; stroke: #d7dde5; stroke-width: 1.5; rx: 10; ry: 10; }
+      .title { font: 700 30px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #1f2d3d; }
+      .subtitle { font: 500 16px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #59687a; }
+      .label { font: 600 20px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #1f2d3d; }
+      .body { font: 500 16px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #334155; }
+      .small { font: 500 14px 'Microsoft YaHei', 'PingFang SC', sans-serif; fill: #64748b; }
+      .arrow { stroke: #6b7c93; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#6b7c93"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1320" height="860"/>
+
+  <text class="title" x="60" y="60">DfMA 协同设计团队示意图</text>
+  <text class="subtitle" x="60" y="92">根据 Yuan et al. (2018) 整理绘制，突出“设计、制造、装配知识在前端同台协同”。</text>
+
+  <rect class="accent" x="440" y="130" width="430" height="84"/>
+  <text class="label" x="530" y="178">DfMA 协同设计团队</text>
+  <text class="small" x="500" y="204">不是单一设计院画图，而是多专业前置协同</text>
+
+  <rect class="card" x="90" y="290" width="250" height="100"/>
+  <text class="label" x="132" y="332">建筑设计师</text>
+  <text class="small" x="132" y="360">负责功能、空间、界面与方案</text>
+
+  <rect class="card" x="390" y="290" width="250" height="100"/>
+  <text class="label" x="432" y="332">结构工程师</text>
+  <text class="small" x="432" y="360">负责受力、连接与结构边界</text>
+
+  <rect class="card" x="690" y="290" width="250" height="100"/>
+  <text class="label" x="730" y="332">拆分设计师</text>
+  <text class="small" x="730" y="360">负责模块拆分、标准件与接口</text>
+
+  <rect class="card" x="990" y="290" width="250" height="100"/>
+  <text class="label" x="1032" y="332">装配技术人员</text>
+  <text class="small" x="1032" y="360">负责运输、吊装与现场安装约束</text>
+
+  <rect class="accent" x="360" y="480" width="600" height="110"/>
+  <text class="label" x="520" y="526">共享的建筑/装配式建筑信息模型</text>
+  <text class="body" x="398" y="556">把方案、结构、模块拆分、制造约束、装配约束放进同一套可追踪模型里</text>
+
+  <rect class="output" x="170" y="670" width="330" height="96"/>
+  <text class="label" x="222" y="714">预制构件工厂 / 模块工厂</text>
+  <text class="small" x="222" y="742">接收可执行的构件、工艺和排产信息</text>
+
+  <rect class="output" x="820" y="670" width="330" height="96"/>
+  <text class="label" x="900" y="714">施工单位 / 现场安装团队</text>
+  <text class="small" x="900" y="742">接收可执行的运输、吊装和安装信息</text>
+
+  <rect class="note" x="80" y="770" width="1160" height="60"/>
+  <text class="body" x="106" y="808">管理含义：真正有价值的不是“把更多人拉进会”，而是把原本分散在设计院、工厂和现场后端才暴露的问题，提前变成前端的共同决策对象。</text>
+
+  <path class="arrow" d="M655 214 L655 260"/>
+  <path class="arrow" d="M655 214 L215 290"/>
+  <path class="arrow" d="M655 214 L515 290"/>
+  <path class="arrow" d="M655 214 L815 290"/>
+  <path class="arrow" d="M655 214 L1115 290"/>
+
+  <path class="arrow" d="M215 390 L215 450 L500 450 L500 480"/>
+  <path class="arrow" d="M515 390 L515 480"/>
+  <path class="arrow" d="M815 390 L815 480"/>
+  <path class="arrow" d="M1115 390 L1115 450 L820 450 L820 480"/>
+
+  <path class="arrow" d="M510 590 L335 670"/>
+  <path class="arrow" d="M810 590 L985 670"/>
+
+  <text class="small" x="248" y="468">方案与功能约束</text>
+  <text class="small" x="470" y="448">结构约束</text>
+  <text class="small" x="760" y="448">模块与接口规则</text>
+  <text class="small" x="978" y="468">运输与安装约束</text>
+</svg>
