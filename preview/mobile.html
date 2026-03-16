@@ -158,31 +158,47 @@
       </article>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/marked@4.3.0/marked.min.js"></script>
     <script>
+      // 添加调试信息
+      console.log('Mobile script started');
+      console.log('Mobile marked available:', typeof marked);
+      
       // 确保marked库加载完成后再执行
       window.addEventListener('load', function() {
+        console.log('Mobile window loaded');
+        console.log('Mobile marked available after load:', typeof marked);
+        
         const paper = document.querySelector("#paper");
         const updatedAt = document.querySelector("#updatedAt");
         const refreshButton = document.querySelector("#refreshButton");
         
         async function renderDocument() {
           try {
+            console.log('Mobile fetching markdown file...');
             const response = await fetch("../20260315.md", { cache: "no-store" });
+            console.log('Mobile fetch response:', response);
+            
             if (!response.ok) {
               throw new Error(`文档读取失败: ${response.status}`);
             }
             
             const markdown = await response.text();
+            console.log('Mobile markdown loaded, length:', markdown.length);
+            
             // 检查marked是否可用
             if (typeof marked === 'function') {
+              console.log('Mobile using marked to render...');
               const html = marked(markdown);
+              console.log('Mobile rendered HTML length:', html.length);
               paper.innerHTML = html;
               updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
             } else {
+              console.error('Mobile marked is not a function:', marked);
               throw new Error('marked库未正确加载');
             }
           } catch (error) {
+            console.error('Mobile error:', error);
             paper.innerHTML = `<p class="error">${error.message}</p>`;
           }
         }
@@ -197,6 +213,7 @@
         });
         
         // 初始加载
+        console.log('Mobile initiating initial render...');
         renderDocument();
       });
     </script>

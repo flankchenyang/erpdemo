@@ -28,10 +28,17 @@
         </article>
       </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/marked@4.3.0/marked.min.js"></script>
     <script>
+      // 添加调试信息
+      console.log('Script started');
+      console.log('marked available:', typeof marked);
+      
       // 确保marked库加载完成后再执行
       window.addEventListener('load', function() {
+        console.log('Window loaded');
+        console.log('marked available after load:', typeof marked);
+        
         const paper = document.querySelector("#paper");
         const fileName = document.querySelector("#fileName");
         const updatedAt = document.querySelector("#updatedAt");
@@ -51,22 +58,31 @@
         
         async function renderDocument() {
           try {
+            console.log('Fetching markdown file...');
             const response = await fetch("../20260315.md", { cache: "no-store" });
+            console.log('Fetch response:', response);
+            
             if (!response.ok) {
               throw new Error(`文档读取失败: ${response.status}`);
             }
             
             const markdown = await response.text();
+            console.log('Markdown loaded, length:', markdown.length);
+            
             // 检查marked是否可用
             if (typeof marked === 'function') {
+              console.log('Using marked to render...');
               const html = marked(markdown);
+              console.log('Rendered HTML length:', html.length);
               paper.innerHTML = html;
               updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
               charCount.textContent = `当前论文字数：${markdown.length.toLocaleString('zh-CN')} 字`;
             } else {
+              console.error('marked is not a function:', marked);
               throw new Error('marked库未正确加载');
             }
           } catch (error) {
+            console.error('Error:', error);
             paper.innerHTML = `<p class="loading">${error.message}</p>`;
           }
         }
@@ -88,6 +104,7 @@
         syncPanelState();
         
         // 初始加载
+        console.log('Initiating initial render...');
         renderDocument();
         
         // 自动检查更新
