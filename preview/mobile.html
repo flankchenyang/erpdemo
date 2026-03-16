@@ -193,12 +193,12 @@
     <script>
       // 添加调试信息
       console.log('Mobile script started');
-      console.log('Mobile marked available:', typeof marked);
+      console.log('Mobile marked available:', typeof window.marked);
       
       // 确保marked库加载完成后再执行
       window.addEventListener('load', function() {
         console.log('Mobile window loaded');
-        console.log('Mobile marked available after load:', typeof marked);
+        console.log('Mobile marked available after load:', typeof window.marked);
         
         const paper = document.querySelector("#paper");
         const updatedAt = document.querySelector("#updatedAt");
@@ -218,9 +218,9 @@
             console.log('Mobile markdown loaded, length:', markdown.length);
             
             // 检查marked是否可用
-            if (typeof marked === 'function') {
+            if (typeof window.marked === 'function') {
               console.log('Mobile using marked to render...');
-              const html = marked(markdown);
+              const html = window.marked(markdown);
               console.log('Mobile rendered HTML length:', html.length);
               paper.innerHTML = html;
               updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;

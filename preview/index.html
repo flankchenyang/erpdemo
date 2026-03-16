@@ -32,12 +32,12 @@
     <script>
       // 添加调试信息
       console.log('Script started');
-      console.log('marked available:', typeof marked);
+      console.log('marked available:', typeof window.marked);
       
       // 确保marked库加载完成后再执行
       window.addEventListener('load', function() {
         console.log('Window loaded');
-        console.log('marked available after load:', typeof marked);
+        console.log('marked available after load:', typeof window.marked);
         
         const paper = document.querySelector("#paper");
         const fileName = document.querySelector("#fileName");
@@ -70,9 +70,9 @@
             console.log('Markdown loaded, length:', markdown.length);
             
             // 检查marked是否可用
-            if (typeof marked === 'function') {
+            if (typeof window.marked === 'function') {
               console.log('Using marked to render...');
-              const html = marked(markdown);
+              const html = window.marked(markdown);
               console.log('Rendered HTML length:', html.length);
               paper.innerHTML = html;
               updatedAt.textContent = `最近更新：${new Date().toLocaleString('zh-CN')}`;
