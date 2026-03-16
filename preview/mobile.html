@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>论文预览 - 手机端</title>
     <style>
+      :root {
+        --bg: #f3efe7;
+        --paper: #fffdf8;
+        --ink: #1f1d1a;
+        --muted: #6a645c;
+        --border: rgba(31, 29, 26, 0.12);
+        --shadow: 0 24px 60px rgba(24, 23, 20, 0.12);
+        --accent: #c9a56a;
+      }
+      
       * {
         margin: 0;
         padding: 0;
@@ -12,83 +22,93 @@
       }
       
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
         line-height: 1.6;
-        color: #333;
-        background-color: #f5f5f5;
+        color: var(--ink);
+        background: linear-gradient(180deg, #efe8db 0%, var(--bg) 100%);
+        min-height: 100vh;
       }
       
       .header {
         position: sticky;
         top: 0;
-        background-color: #fff;
-        padding: 12px 16px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background: rgba(255, 253, 248, 0.92);
+        padding: 16px;
+        box-shadow: 0 2px 12px rgba(24, 23, 20, 0.1);
         z-index: 100;
+        backdrop-filter: blur(10px);
       }
       
       .header h1 {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 600;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
+        color: #18211f;
       }
       
       .header .meta {
-        font-size: 12px;
-        color: #666;
+        font-size: 13px;
+        color: var(--muted);
       }
       
       .refresh-btn {
         position: absolute;
-        top: 12px;
+        top: 16px;
         right: 16px;
-        padding: 6px 12px;
-        background-color: #007AFF;
-        color: white;
+        padding: 8px 16px;
+        background-color: #f1d39c;
+        color: #18211f;
         border: none;
-        border-radius: 4px;
-        font-size: 12px;
+        border-radius: 999px;
+        font-size: 13px;
         cursor: pointer;
+        font-family: inherit;
       }
       
       .content {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 16px;
-        background-color: #fff;
-        min-height: calc(100vh - 60px);
+        padding: 20px;
       }
       
       .paper {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 32px 24px;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+        line-height: 1.95;
         font-size: 16px;
-        line-height: 1.8;
       }
       
       .paper h1, .paper h2, .paper h3, .paper h4, .paper h5, .paper h6 {
         margin-top: 24px;
         margin-bottom: 16px;
         font-weight: 600;
-        line-height: 1.25;
+        line-height: 1.35;
+        color: #18211f;
       }
       
       .paper h1 {
+        margin-top: 0;
+        padding-bottom: 16px;
+        border-bottom: 2px solid rgba(201, 165, 106, 0.4);
         font-size: 24px;
-        padding-bottom: 0.3em;
-        border-bottom: 1px solid #eaecef;
       }
       
       .paper h2 {
+        margin-top: 32px;
         font-size: 20px;
-        padding-bottom: 0.3em;
-        border-bottom: 1px solid #eaecef;
       }
       
       .paper h3 {
+        margin-top: 24px;
         font-size: 18px;
       }
       
       .paper p {
         margin-bottom: 16px;
+        word-break: break-word;
       }
       
       .paper ul, .paper ol {
@@ -98,23 +118,25 @@
       
       .paper li {
         margin-bottom: 8px;
+        word-break: break-word;
       }
       
       .paper table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 16px;
+        margin: 24px 0;
         font-size: 14px;
+        overflow: hidden;
       }
       
       .paper th, .paper td {
-        padding: 8px;
-        border: 1px solid #eaecef;
+        padding: 10px 12px;
+        border: 1px solid rgba(31, 29, 26, 0.12);
         text-align: left;
       }
       
       .paper th {
-        background-color: #f6f8fa;
+        background: #f4ecdd;
         font-weight: 600;
       }
       
@@ -124,17 +146,26 @@
         margin: 16px 0;
       }
       
+      .paper .thesis-figure {
+        margin: 24px 0 10px;
+        padding: 18px;
+        border: 1px solid rgba(31, 29, 26, 0.1);
+        border-radius: 20px;
+        background: #fcfaf5;
+      }
+      
       .paper blockquote {
-        border-left: 4px solid #dfe2e5;
-        padding-left: 16px;
-        color: #6a737d;
-        margin-bottom: 16px;
+        margin: 24px 0;
+        padding: 12px 20px;
+        border-left: 4px solid var(--accent);
+        color: #544d44;
+        background: #fbf6ea;
       }
       
       .loading {
         text-align: center;
         padding: 40px 0;
-        color: #666;
+        color: var(--muted);
       }
       
       .error {
